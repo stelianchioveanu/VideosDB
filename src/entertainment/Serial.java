@@ -1,6 +1,7 @@
 package entertainment;
 
 import common.Action;
+import common.Constants;
 import fileio.SerialInputData;
 
 import java.util.ArrayList;
@@ -28,15 +29,14 @@ public final class Serial extends Video {
     public static ArrayList<Serial> makeSerialArray(final Action action, final HashMap<String,
             Serial> serialHashMap) {
         ArrayList<Serial> sortedArray = new ArrayList<>();
-        double aux;
         for (Serial serial : serialHashMap.values()) {
-            switch (action.getCriteria()) {
-                case "most_viewed" -> aux = serial.numberViews;
-                case "longest" -> aux = 1;
-                case "favorite" -> aux = serial.numberFavorite;
-                case "ratings" -> aux = serial.getRating();
-                default -> aux = 0;
-            }
+            var aux = switch (action.getCriteria()) {
+                case Constants.MOST_VIEWED -> serial.numberViews;
+                case Constants.LONGEST -> serial.totalDuration;
+                case Constants.FAVORITE -> serial.numberFavorite;
+                case Constants.RATINGS -> serial.getRating();
+                default -> Constants.DEFAULT_CASE_INT;
+            };
             if (aux != 0
                     && (String.valueOf(serial.year).equals(action.getFilters().get(0).get(0))
                     || action.getFilters().get(0).get(0) == null)) {

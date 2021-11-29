@@ -42,16 +42,21 @@ public final class Actor {
         return awards;
     }
 
+    /**
+     * com
+     */
     public double getActorRating(final HashMap<String, Movie> movieHashMap,
                                  final HashMap<String, Serial> serialHashMap) {
         double rating = 0;
         int nr = 0;
         for (String title : this.filmography) {
-            if (movieHashMap.get(title) != null && movieHashMap.get(title).getRating() != 0) {
+            if (movieHashMap.get(title) != null
+                    && movieHashMap.get(title).getRating() != 0) {
                 rating += movieHashMap.get(title).getRating();
                 nr++;
             }
-            if (serialHashMap.get(title) != null && serialHashMap.get(title).getRating() != 0) {
+            if (serialHashMap.get(title) != null
+                    && serialHashMap.get(title).getRating() != 0) {
                 rating += serialHashMap.get(title).getRating();
                 nr++;
             }
@@ -63,6 +68,9 @@ public final class Actor {
         return rating;
     }
 
+    /**
+     * com
+     */
     public int getActorNumberAwards() {
         int sum = 0;
         for (Integer i : this.awards.values()) {
@@ -71,7 +79,11 @@ public final class Actor {
         return sum;
     }
 
-    public static String averageActor(final Action action, final HashMap<String, Movie> movieHashMap,
+    /**
+     * com
+     */
+    public static String averageActor(final Action action,
+                                      final HashMap<String, Movie> movieHashMap,
                                       final HashMap<String, Serial> serialHashMap,
                                       final HashMap<String, Actor> actorHashMap) {
         ArrayList<Actor> sortedArray = new ArrayList<>();
@@ -91,11 +103,15 @@ public final class Actor {
         return outputActorCommand(sortedArray, action);
     }
 
-    public static String awardsActor(final Action action, final HashMap<String, Actor> actorHashMap) {
+    /**
+     * com
+     */
+    public static String awardsActor(final Action action,
+                                     final HashMap<String, Actor> actorHashMap) {
         ArrayList<Actor> sortedArray = new ArrayList<>();
         for (Actor actor : actorHashMap.values()) {
             boolean aux = true;
-            for (String award : action.getFilters().get(Constants.AWARD_FILTER_INDEX)) {
+            for (String award : action.getFilters().get(Constants.AWARD_INDEX)) {
                 if (actor.awards.get(stringToAwards(award)) == null) {
                     aux = false;
                     break;
@@ -114,11 +130,15 @@ public final class Actor {
         return outputActorCommand(sortedArray, action);
     }
 
-    public static String filterDescriptionActor(final Action action, final HashMap<String, Actor> actorHashMap) {
+    /**
+     * com
+     */
+    public static String filterDescriptionActor(final Action action,
+                                                final HashMap<String, Actor> actorHashMap) {
         ArrayList<Actor> sortedArray = new ArrayList<>();
         for (Actor actor : actorHashMap.values()) {
             boolean aux = true;
-            for (String description : action.getFilters().get(Constants.DESCRIPTION_FILTER_INDEX)) {
+            for (String description : action.getFilters().get(Constants.DESCRIPTION_INDEX)) {
                 if (!actor.careerDescription.contains(description)) {
                     aux = false;
                     break;
@@ -132,7 +152,11 @@ public final class Actor {
         return outputActorCommand(sortedArray, action);
     }
 
-    public static String outputActorCommand(final ArrayList<Actor> sortedArray, final Action action) {
+    /**
+     * com
+     */
+    public static String outputActorCommand(final ArrayList<Actor> sortedArray,
+                                            final Action action) {
         String output;
         StringBuilder outputBuilder = new StringBuilder();
         if (action.getSortType().equals("asc")) {

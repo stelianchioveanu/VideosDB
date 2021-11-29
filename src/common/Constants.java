@@ -75,6 +75,15 @@ public final class Constants {
     public static final int MAX_LENGTH = 50;
 
     // add any constants you think you may use
-    public static final int AWARD_FILTER_INDEX = 3;
-    public static final int DESCRIPTION_FILTER_INDEX = 2;
+    public static final int AWARD_INDEX = 3;
+    public static final int DESCRIPTION_INDEX = 2;
+    public static final String DEFAULT_CASE_STRING = "";
+    public static final int DEFAULT_CASE_INT = 0;
+    public static final String AVERAGE = "average";
+    public static final String MOST_VIEWED = "most_viewed";
+    public static final String LONGEST = "longest";
+    public static final String FAVORITE = "favorite";
+    public static final String RATINGS = "ratings";
+    public static final String VIEW = "view";
+    public static final String RATING = "rating";
 }

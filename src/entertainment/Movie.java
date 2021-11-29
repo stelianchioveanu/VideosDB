@@ -1,10 +1,12 @@
 package entertainment;
 
 import common.Action;
+import common.Constants;
 import fileio.MovieInputData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public final class Movie extends Video {
     private final int duration;
@@ -25,15 +27,14 @@ public final class Movie extends Video {
     public static ArrayList<Movie> makeMovieArray(final Action action,
                                                   final HashMap<String, Movie> movieHashMap) {
         ArrayList<Movie> sortedArray = new ArrayList<>();
-        double aux;
         for (Movie movie : movieHashMap.values()) {
-            switch (action.getCriteria()) {
-                case "most_viewed" -> aux = movie.numberViews;
-                case "longest" -> aux = movie.duration;
-                case "favorite" -> aux = movie.numberFavorite;
-                case "ratings" -> aux = movie.rating;
-                default -> aux = 0;
-            }
+            var aux = switch (action.getCriteria()) {
+                case Constants.MOST_VIEWED -> movie.numberViews;
+                case Constants.LONGEST -> movie.duration;
+                case Constants.FAVORITE -> movie.numberFavorite;
+                case Constants.RATINGS -> movie.rating;
+                default -> Constants.DEFAULT_CASE_INT;
+            };
             if (aux != 0
                     && (String.valueOf(movie.year).equals(action.getFilters().get(0).get(0))
                     || action.getFilters().get(0).get(0) == null)) {

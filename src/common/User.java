@@ -42,7 +42,11 @@ public class User {
         return history;
     }
 
-    public String view(Action action, HashMap<String, Movie> movieHashMap, HashMap<String, Serial> serialHashMap) {
+    /**
+     * com
+     */
+    public String view(final Action action, final HashMap<String, Movie> movieHashMap,
+                       final HashMap<String, Serial> serialHashMap) {
         this.history.merge(action.getTitle(), 1, Integer::sum);
         if (movieHashMap.get(action.getTitle()) != null) {
             movieHashMap.get(action.getTitle()).setNumberViews(movieHashMap.get(action.getTitle()).getNumberViews() + 1);
@@ -52,7 +56,11 @@ public class User {
         return "success -> " + action.getTitle() + " was viewed with total views of " + this.history.get(action.getTitle());
     }
 
-    public String favorite(Action action, HashMap<String, Movie> movieHashMap, HashMap<String, Serial> serialHashMap) {
+    /**
+     * com
+     */
+    public String favorite(final Action action, final HashMap<String, Movie> movieHashMap,
+                           final HashMap<String, Serial> serialHashMap) {
         if (this.history.get(action.getTitle()) != null) {
             for (String favoriteMovie : this.favoriteMovies) {
                 if (favoriteMovie.equals(action.getTitle())) {
@@ -70,14 +78,22 @@ public class User {
         return "error -> " + action.getTitle() + " is not seen";
     }
 
-    public String rating(Action action, HashMap<String, Movie> movieHashMap, HashMap<String, Serial> serialHashMap) {
+    /**
+     * com
+     */
+    public String rating(final Action action, final HashMap<String, Movie> movieHashMap,
+                         final HashMap<String, Serial> serialHashMap) {
         if (action.getSeasonNumber() == 0) {
             return ratingMovie(action.getTitle(), movieHashMap, action.getGrade());
         }
         return ratingSerial(action.getTitle(), serialHashMap, action.getSeasonNumber(), action.getGrade());
     }
 
-    public String ratingMovie(String title, HashMap<String, Movie> movieHashMap, double grade) {
+    /**
+     * com
+     */
+    public String ratingMovie(final String title, final HashMap<String, Movie> movieHashMap,
+                              final double grade) {
         if (this.history.get(title) != null) {
             if (this.ratedMovies.get(title) != null) {
                 return "error -> " + title + " has been already rated";
@@ -90,7 +106,11 @@ public class User {
         return "error -> " + title + " is not seen";
     }
 
-    public String ratingSerial(String title, HashMap<String, Serial> serialHashMap, int seasonNumber, double grade) {
+    /**
+     * com
+     */
+    public String ratingSerial(final String title, final HashMap<String, Serial> serialHashMap,
+                               final int seasonNumber, final double grade) {
         if (this.history.get(title) != null) {
             if (this.ratedSeasons.get(serialHashMap.get(title).getSeasons().get(seasonNumber - 1)) != null) {
                 return "error -> " + title + " has been already rated";
@@ -102,7 +122,11 @@ public class User {
         return "error -> " + title + " is not seen";
     }
 
-    public static String numberOfRatings(Action action, HashMap<String, User> userHashMap) {
+    /**
+     * com
+     */
+    public static String numberOfRatings(final Action action,
+                                         final HashMap<String, User> userHashMap) {
         ArrayList<User> sortedArray = new ArrayList<>();
         for (User user : userHashMap.values()) {
             if (user.ratedMovies.size() + user.ratedSeasons.size() != 0) {
@@ -123,7 +147,11 @@ public class User {
         return outputUserCommand(sortedArray, action);
     }
 
-    public static String outputUserCommand(ArrayList<User> sortedArray, Action action) {
+    /**
+     * com
+     */
+    public static String outputUserCommand(final ArrayList<User> sortedArray,
+                                           final Action action) {
         String output = "";
         if (action.getSortType().equals("asc")) {
             for (int i = 0; i < Math.min(action.getNumber(), sortedArray.size()); i++) {

@@ -16,10 +16,18 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import static entertainment.Movie.*;
-import static entertainment.Serial.*;
-import static actor.Actor.*;
-import static common.User.*;
+import static entertainment.Movie.longestMovie;
+import static entertainment.Movie.favoriteMovie;
+import static entertainment.Movie.mostViewedMovies;
+import static entertainment.Movie.ratingMovies;
+import static entertainment.Serial.longestSerial;
+import static entertainment.Serial.favoriteSerial;
+import static entertainment.Serial.mostViewedSerial;
+import static entertainment.Serial.ratingSerial;
+import static actor.Actor.awardsActor;
+import static actor.Actor.averageActor;
+import static actor.Actor.filterDescriptionActor;
+import static common.User.numberOfRatings;
 
 public class Repository {
     private final HashSet<String> genreHashSet = new HashSet<>();
@@ -29,7 +37,10 @@ public class Repository {
     private final HashMap<String, User> userHashMap = new HashMap<>();
     private final HashMap<Integer, Action> actionArray = new HashMap<>();
 
-    public void initialization(Input input) {
+    /**
+     * com
+     */
+    public void initialization(final Input input) {
         for (Genre i : Genre.values()) {
             this.genreHashSet.add(i.toString());
         }
@@ -56,10 +67,10 @@ public class Repository {
                 String title = (String) entry.getKey();
                 if (movieHashMap.get(title) != null) {
                     movieHashMap.get(title).setNumberViews(movieHashMap.get(title).getNumberViews()
-                                                           + user.getHistory().get(title));
+                            + user.getHistory().get(title));
                 } else {
                     serialHashMap.get(title).setNumberViews(serialHashMap.get(title).getNumberViews()
-                                                            + user.getHistory().get(title));
+                            + user.getHistory().get(title));
                 }
             }
             for (String title : user.getFavoriteMovies()) {
@@ -72,65 +83,65 @@ public class Repository {
         }
     }
 
-    public String switchCasesAction(Action action) {
+    /**
+     * com
+     */
+    public String switchCasesAction(final Action action) {
         switch (action.getActionType()) {
             case Constants.COMMAND:
-                switch (action.getType()) {
-                    case "view":
-                        return this.userHashMap.get(action.getUsername()).view(action,
-                                movieHashMap, serialHashMap);
-                    case "favorite":
-                        return this.userHashMap.get(action.getUsername()).favorite(action,
-                                movieHashMap, serialHashMap);
-                    case "rating":
-                        return this.userHashMap.get(action.getUsername()).rating(action,
-                                movieHashMap, serialHashMap);
-                }
+                return switch (action.getType()) {
+                    case Constants.VIEW -> this.userHashMap.get(action.getUsername()).view(action,
+                            movieHashMap, serialHashMap);
+                    case Constants.FAVORITE -> this.userHashMap.get(action.getUsername()).favorite(action,
+                            movieHashMap, serialHashMap);
+                    case Constants.RATING -> this.userHashMap.get(action.getUsername()).rating(action,
+                            movieHashMap, serialHashMap);
+                    default -> Constants.DEFAULT_CASE_STRING;
+                };
             case Constants.QUERY:
                 switch (action.getObjectType()) {
                     case Constants.MOVIES:
-                        switch (action.getCriteria()) {
-                            case "most_viewed":
-                                return mostViewedMovies(action, movieHashMap);
-                            case "longest":
-                                return longestMovie(action, movieHashMap);
-                            case "favorite":
-                                return favoriteMovie(action, movieHashMap);
-                            case "ratings":
-                                return ratingMovies(action, movieHashMap);
-                        }
+                        return switch (action.getCriteria()) {
+                            case Constants.MOST_VIEWED -> mostViewedMovies(action, movieHashMap);
+                            case Constants.LONGEST -> longestMovie(action, movieHashMap);
+                            case Constants.FAVORITE -> favoriteMovie(action, movieHashMap);
+                            case Constants.RATINGS -> ratingMovies(action, movieHashMap);
+                            default -> Constants.DEFAULT_CASE_STRING;
+                        };
                     case Constants.SHOWS:
-                        switch (action.getCriteria()) {
-                            case "most_viewed":
-                                return mostViewedSerial(action, serialHashMap);
-                            case "longest":
-                                return longestSerial(action, serialHashMap);
-                            case "favorite":
-                                return favoriteSerial(action, serialHashMap);
-                            case "ratings":
-                                return ratingSerial(action, serialHashMap);
-                        }
+                        return switch (action.getCriteria()) {
+                            case Constants.MOST_VIEWED -> mostViewedSerial(action, serialHashMap);
+                            case Constants.LONGEST -> longestSerial(action, serialHashMap);
+                            case Constants.FAVORITE -> favoriteSerial(action, serialHashMap);
+                            case Constants.RATINGS -> ratingSerial(action, serialHashMap);
+                            default -> Constants.DEFAULT_CASE_STRING;
+                        };
                     case Constants.USERS:
                         if (action.getCriteria().equals(Constants.NUM_RATINGS)) {
                             return numberOfRatings(action, userHashMap);
                         }
                     case Constants.ACTORS:
-                        switch (action.getCriteria()) {
-                            case "average":
-                                return averageActor(action, movieHashMap,
-                                        serialHashMap, actorHashMap);
-                            case Constants.AWARDS:
-                                return awardsActor(action, actorHashMap);
-                            case Constants.FILTER_DESCRIPTIONS:
-                                return filterDescriptionActor(action, actorHashMap);
-                        }
+                        return switch (action.getCriteria()) {
+                            case Constants.AVERAGE -> averageActor(action, movieHashMap,
+                                    serialHashMap, actorHashMap);
+                            case Constants.AWARDS -> awardsActor(action, actorHashMap);
+                            case Constants.FILTER_DESCRIPTIONS -> filterDescriptionActor(action, actorHashMap);
+                            default -> Constants.DEFAULT_CASE_STRING;
+                        };
+                    default:
+                        return Constants.DEFAULT_CASE_STRING;
                 }
             case Constants.RECOMMENDATION:
+                return "";
+            default:
+                return Constants.DEFAULT_CASE_STRING;
         }
-        return "";
     }
 
-    public void entryPoint(Input input, JSONArray arrayResult, Writer fileWriter) throws IOException {
+    /**
+     * com
+     */
+    public void entryPoint(final Input input, final JSONArray arrayResult, final Writer fileWriter) throws IOException {
         this.initialization(input);
         JSONObject object;
         for (Integer i : actionArray.keySet()) {
