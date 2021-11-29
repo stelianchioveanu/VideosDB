@@ -38,8 +38,8 @@ public final class Serial extends Video {
                 default -> aux = 0;
             }
             if (aux != 0
-                && (String.valueOf(serial.year).equals(action.getFilters().get(0).get(0))
-                || action.getFilters().get(0).get(0) == null)) {
+                    && (String.valueOf(serial.year).equals(action.getFilters().get(0).get(0))
+                    || action.getFilters().get(0).get(0) == null)) {
                 if (action.getFilters().get(1).get(0) == null) {
                     sortedArray.add(serial);
                 } else {
@@ -122,25 +122,23 @@ public final class Serial extends Video {
     public static String outputSerialCommand(final ArrayList<Serial> sortedArray,
                                              final Action action) {
         String output;
+        StringBuilder outputBuilder = new StringBuilder();
         if (action.getSortType().equals("asc")) {
-            StringBuilder outputBuilder = new StringBuilder();
             for (int i = 0; i < Math.min(action.getNumber(), sortedArray.size()); i++) {
                 outputBuilder.append(sortedArray.get(i).title);
                 if (i != Math.min(action.getNumber(), sortedArray.size()) - 1) {
                     outputBuilder.append(", ");
                 }
             }
-            output = outputBuilder.toString();
         } else {
-            StringBuilder outputBuilder = new StringBuilder();
             for (int i = sortedArray.size() - 1; i >= Math.max(sortedArray.size() - action.getNumber(), 0); i--) {
                 outputBuilder.append(sortedArray.get(i).title);
                 if (i != Math.max(0, sortedArray.size() - action.getNumber())) {
                     outputBuilder.append(", ");
                 }
             }
-            output = outputBuilder.toString();
         }
+        output = outputBuilder.toString();
         return "Query result: [" + output + "]";
     }
 

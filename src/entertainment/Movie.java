@@ -35,8 +35,8 @@ public final class Movie extends Video {
                 default -> aux = 0;
             }
             if (aux != 0
-                && (String.valueOf(movie.year).equals(action.getFilters().get(0).get(0))
-                || action.getFilters().get(0).get(0) == null)) {
+                    && (String.valueOf(movie.year).equals(action.getFilters().get(0).get(0))
+                    || action.getFilters().get(0).get(0) == null)) {
                 if (action.getFilters().get(1).get(0) == null) {
                     sortedArray.add(movie);
                 } else {
