@@ -7,6 +7,9 @@ import entertainment.Serial;
 import java.util.ArrayList;
 
 public class Output {
+    /**
+     * com
+     */
     public static String outputMovieCommand(final ArrayList<Movie> sortedArray,
                                             final Action action) {
         StringBuilder outputBuilder = new StringBuilder();
@@ -28,6 +31,9 @@ public class Output {
         return "Query result: [" + outputBuilder + "]";
     }
 
+    /**
+     * com
+     */
     public static String outputSerialCommand(final ArrayList<Serial> sortedArray,
                                              final Action action) {
         StringBuilder outputBuilder = new StringBuilder();
@@ -49,6 +55,9 @@ public class Output {
         return "Query result: [" + outputBuilder + "]";
     }
 
+    /**
+     * com
+     */
     public static String outputActorCommand(final ArrayList<Actor> sortedArray,
                                             final Action action) {
         StringBuilder outputBuilder = new StringBuilder();
@@ -70,6 +79,9 @@ public class Output {
         return "Query result: [" + outputBuilder + "]";
     }
 
+    /**
+     * com
+     */
     public static String outputUserCommand(final ArrayList<User> sortedArray,
                                            final Action action) {
         StringBuilder outputBuilder = new StringBuilder();

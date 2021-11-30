@@ -2,6 +2,9 @@ package entertainment;
 
 import java.util.ArrayList;
 
+/**
+ * Information about a video
+ */
 public abstract class Video {
     protected int year;
     protected String title;

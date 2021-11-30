@@ -9,6 +9,9 @@ import java.util.HashMap;
 
 import static common.Output.outputMovieCommand;
 
+/**
+ * Information about a movie
+ */
 public final class Movie extends Video {
     private final int duration;
     private int numberRatings;
@@ -126,11 +129,11 @@ public final class Movie extends Video {
         return this.rating;
     }
 
-    public void setNumberRatings(int numberRatings) {
+    public void setNumberRatings(final int numberRatings) {
         this.numberRatings = numberRatings;
     }
 
-    public void setRating(double rating) {
+    public void setRating(final double rating) {
         this.rating = rating;
     }
 }

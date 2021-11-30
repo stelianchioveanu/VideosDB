@@ -4,15 +4,19 @@ import entertainment.Genre;
 import entertainment.Movie;
 import entertainment.Serial;
 import entertainment.Season;
+import entertainment.Video;
 import fileio.UserInputData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import static common.Output.outputUserCommand;
+import static utils.Utils.stringToGenre;
 
+/**
+ * Information about a user
+ */
 public final class User {
     private final String username;
     private final String subscriptionType;
@@ -100,8 +104,11 @@ public final class User {
                 return "error -> " + title + " has been already rated";
             }
             this.ratedMovies.put(title, movieHashMap.get(title));
-            movieHashMap.get(title).setNumberRatings(movieHashMap.get(title).getNumberRatings() + 1);
-            movieHashMap.get(title).setRating((movieHashMap.get(title).getRating() * (movieHashMap.get(title).getNumberRatings() - 1) + grade) / movieHashMap.get(title).getNumberRatings());
+            movieHashMap.get(title).setNumberRatings(movieHashMap.get(title).getNumberRatings()
+                    + 1);
+            movieHashMap.get(title).setRating((movieHashMap.get(title).getRating()
+                    * (movieHashMap.get(title).getNumberRatings() - 1) + grade)
+                    / movieHashMap.get(title).getNumberRatings());
             return "success -> " + title + " was rated with " + grade + " by " + this.username;
         }
         return "error -> " + title + " is not seen";
@@ -153,7 +160,7 @@ public final class User {
                 return "StandardRecommendation result: " + key;
             }
         }
-        for (String key : movieHashMap.keySet()) {
+        for (String key : serialHashMap.keySet()) {
             if (!this.getHistory().containsKey(key)) {
                 return "StandardRecommendation result: " + key;
             }
@@ -179,7 +186,7 @@ public final class User {
                 bestRating = serialHashMap.get(key).getRating();
             }
         }
-        if(title.equals("")){
+        if (title.equals("")) {
             return "BestRatedUnseenRecommendation cannot be applied!";
         }
         return "BestRatedUnseenRecommendation result: " + title;
@@ -187,18 +194,20 @@ public final class User {
 
     public String popularPremium(final HashMap<String, Movie> movieHashMap,
                                  final HashMap<String, Serial> serialHashMap,
-                                 final HashMap<Genre, Integer> genreHashMap){
-        if(this.subscriptionType.equals("BASIC"))
+                                 final HashMap<Genre, Integer> genreHashMap) {
+        if (this.subscriptionType.equals("BASIC")) {
             return "PopularRecommendation cannot be applied!";
-        ArrayList<Map.Entry<Genre, Integer>> genreEntrySetSorted = new ArrayList<>(genreHashMap.entrySet());
-        genreEntrySetSorted.sort((o1, o2) -> o1.getValue() - o2.getValue());
-
-        for (var entry : genreEntrySetSorted){
+        }
+        ArrayList<Map.Entry<Genre, Integer>> genreEntrySetSorted
+                = new ArrayList<>(genreHashMap.entrySet());
+        genreEntrySetSorted.sort((o1, o2) -> o2.getValue() - o1.getValue());
+        for (var entry : genreEntrySetSorted) {
             for (String key : movieHashMap.keySet()) {
                 if (!this.getHistory().containsKey(key)) {
                     for (var genre : movieHashMap.get(key).getGenres()) {
-                        if (genre.toUpperCase(Locale.ROOT).equals(entry.getKey().toString())) {
-                            return "PopularRecommendation result: " + movieHashMap.get(key).getTitle();
+                        if (stringToGenre(genre).equals(entry.getKey())) {
+                            return "PopularRecommendation result: "
+                                    + movieHashMap.get(key).getTitle();
                         }
                     }
                 }
@@ -206,13 +215,85 @@ public final class User {
             for (String key : serialHashMap.keySet()) {
                 if (!this.getHistory().containsKey(key)) {
                     for (var genre : serialHashMap.get(key).getGenres()) {
-                        if (genre.toUpperCase(Locale.ROOT).equals(entry.getKey().toString())) {
-                            return "PopularRecommendation result: " + serialHashMap.get(key).getTitle();
+                        if (stringToGenre(genre).equals(entry.getKey())) {
+                            return "PopularRecommendation result: "
+                                    + serialHashMap.get(key).getTitle();
                         }
                     }
                 }
             }
         }
         return "PopularRecommendation cannot be applied!";
+    }
+
+    public String searchPremium(final HashMap<String, Movie> movieHashMap,
+                                final HashMap<String, Serial> serialHashMap,
+                                String genre) {
+        if (this.subscriptionType.equals("BASIC")) {
+            return "SearchRecommendation cannot be applied!";
+        }
+        ArrayList<Video> sortedArrayVideo = new ArrayList<>();
+        for (var movie : movieHashMap.values()) {
+            if (!this.getHistory().containsKey(movie.getTitle())) {
+                for (var genres : movie.getGenres()) {
+                    if (genres.equals(genre)) {
+                        sortedArrayVideo.add(movie);
+                    }
+                }
+            }
+        }
+        for (var serial : serialHashMap.values()) {
+            if (!this.getHistory().containsKey(serial.getTitle())) {
+                for (var genres : serial.getGenres()) {
+                    if (genres.equals(genre)) {
+                        sortedArrayVideo.add(serial);
+                    }
+                }
+            }
+        }
+        sortedArrayVideo.sort((o1, o2) -> {
+            if (Double.compare(o1.getRating(), o2.getRating()) == 0) {
+                return o1.getTitle().compareTo(o2.getTitle());
+            }
+            return Double.compare(o1.getRating(), o2.getRating());
+        });
+        StringBuilder outputBuilder = new StringBuilder();
+        for (var video : sortedArrayVideo) {
+            outputBuilder.append(video.getTitle());
+            if (!sortedArrayVideo.get(sortedArrayVideo.size() - 1).equals(video)) {
+                outputBuilder.append(", ");
+            }
+        }
+        if (sortedArrayVideo.size() != 0) {
+            return "SearchRecommendation result: [" + outputBuilder + "]";
+        }
+        return "SearchRecommendation cannot be applied!";
+    }
+
+    public String favoritePremium(final HashMap<String, Movie> movieHashMap,
+                                  final HashMap<String, Serial> serialHashMap) {
+        if (this.subscriptionType.equals("BASIC")) {
+            return "FavoriteRecommendation cannot be applied!";
+        }
+        int numberFavoriteMax = 0;
+        String title = "";
+        for (var movie : movieHashMap.values()) {
+            if (!this.getHistory().containsKey(movie.getTitle())
+                    && (movie.getNumberFavorite() > numberFavoriteMax)) {
+                numberFavoriteMax = movie.getNumberFavorite();
+                title = movie.getTitle();
+            }
+        }
+        for (var serial : serialHashMap.values()) {
+            if (!this.getHistory().containsKey(serial.getTitle())
+                    && (serial.getNumberFavorite() > numberFavoriteMax)) {
+                numberFavoriteMax = serial.getNumberFavorite();
+                title = serial.getTitle();
+            }
+        }
+        if (numberFavoriteMax == 0) {
+            return "FavoriteRecommendation cannot be applied!";
+        }
+        return "FavoriteRecommendation result: " + title;
     }
 }

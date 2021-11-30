@@ -88,16 +88,16 @@ public final class Repository {
                             movieHashMap.get(title).getNumberViews()
                                     + user.getHistory().get(title));
                     for (String genre : movieHashMap.get(title).getGenres()) {
-                        int aux = user.getHistory().get(title) + genreHashMap.get(stringToGenre(genre));
-                        genreHashMap.put(stringToGenre(genre), aux);
+                        genreHashMap.put(stringToGenre(genre), user.getHistory().get(title)
+                                + genreHashMap.get(stringToGenre(genre)));
                     }
                 } else {
                     serialHashMap.get(title).setNumberViews(
                             serialHashMap.get(title).getNumberViews()
                                     + user.getHistory().get(title));
                     for (String genre : serialHashMap.get(title).getGenres()) {
-                        int aux = user.getHistory().get(title) + genreHashMap.get(stringToGenre(genre));
-                        genreHashMap.put(stringToGenre(genre), aux);
+                        genreHashMap.put(stringToGenre(genre), user.getHistory().get(title)
+                                + genreHashMap.get(stringToGenre(genre)));
                     }
                 }
 
@@ -177,8 +177,10 @@ public final class Repository {
                             serialHashMap);
                     case Constants.POPULAR -> userHashMap.get(action.getUsername()).popularPremium(movieHashMap,
                             serialHashMap, genreHashMap);
-                    case Constants.FAVORITE -> Constants.DEFAULT_CASE_STRING;
-                    case Constants.SEARCH -> Constants.DEFAULT_CASE_STRING;
+                    case Constants.FAVORITE -> userHashMap.get(action.getUsername()).favoritePremium(movieHashMap,
+                            serialHashMap);
+                    case Constants.SEARCH -> userHashMap.get(action.getUsername()).searchPremium(movieHashMap,
+                            serialHashMap, action.getGenre());
                     default -> Constants.DEFAULT_CASE_STRING;
                 };
             default:
