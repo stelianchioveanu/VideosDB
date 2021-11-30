@@ -35,25 +35,6 @@ public final class Action {
         this.filters = actionInputData.getFilters();
     }
 
-    @Override
-    public String toString() {
-        return "Action{"
-                + "actionId=" + actionId
-                + ", actionType='" + actionType + '\''
-                + ", type='" + type + '\''
-                + ", username='" + username + '\''
-                + ", objectType='" + objectType + '\''
-                + ", sortType='" + sortType + '\''
-                + ", criteria='" + criteria + '\''
-                + ", title='" + title + '\''
-                + ", genre='" + genre + '\''
-                + ", number=" + number
-                + ", grade=" + grade
-                + ", seasonNumber=" + seasonNumber
-                + ", filters=" + filters
-                + '}';
-    }
-
     public int getActionId() {
         return actionId;
     }

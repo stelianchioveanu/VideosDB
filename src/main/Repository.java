@@ -19,8 +19,7 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 import static entertainment.Movie.longestMovie;
 import static entertainment.Movie.favoriteMovie;
@@ -30,25 +29,38 @@ import static entertainment.Serial.longestSerial;
 import static entertainment.Serial.favoriteSerial;
 import static entertainment.Serial.mostViewedSerial;
 import static entertainment.Serial.ratingSerial;
-import static actor.Actor.awardsActor;
-import static actor.Actor.averageActor;
-import static actor.Actor.filterDescriptionActor;
+import static actor.Actor.awards;
+import static actor.Actor.average;
+import static actor.Actor.filterDescription;
 import static common.User.numberOfRatings;
+import static utils.Utils.stringToGenre;
 
-public class Repository {
-    private final HashSet<String> genreHashSet = new HashSet<>();
+public final class Repository {
+    private final HashMap<Genre, Integer> genreHashMap = new HashMap<>();
     private final HashMap<String, Actor> actorHashMap = new HashMap<>();
-    private final HashMap<String, Movie> movieHashMap = new HashMap<>();
-    private final HashMap<String, Serial> serialHashMap = new HashMap<>();
+    private final HashMap<String, Movie> movieHashMap = new LinkedHashMap<>();
+    private final HashMap<String, Serial> serialHashMap = new LinkedHashMap<>();
     private final HashMap<String, User> userHashMap = new HashMap<>();
     private final HashMap<Integer, Action> actionArray = new HashMap<>();
+
+    private static Repository instance = null;
+
+    private Repository() {
+    }
 
     /**
      * com
      */
-    public void initialization(final Input input) {
-        for (Genre i : Genre.values()) {
-            this.genreHashSet.add(i.toString());
+    public static Repository getInstance() {
+        if (instance == null) {
+            instance = new Repository();
+        }
+        return instance;
+    }
+
+    private void initialization(final Input input) {
+        for (Genre genre : Genre.values()) {
+            this.genreHashMap.put(genre, Constants.ZERO);
         }
         for (ActorInputData i : input.getActors()) {
             Actor actor = new Actor(i);
@@ -69,30 +81,49 @@ public class Repository {
         for (UserInputData i : input.getUsers()) {
             User user = new User(i);
             this.userHashMap.put(user.getUsername(), user);
-            for (Map.Entry entry : user.getHistory().entrySet()) {
-                String title = (String) entry.getKey();
+            for (var entry : user.getHistory().entrySet()) {
+                String title = entry.getKey();
                 if (movieHashMap.get(title) != null) {
-                    movieHashMap.get(title).setNumberViews(movieHashMap.get(title).getNumberViews()
-                            + user.getHistory().get(title));
+                    movieHashMap.get(title).setNumberViews(
+                            movieHashMap.get(title).getNumberViews()
+                                    + user.getHistory().get(title));
+                    for (String genre : movieHashMap.get(title).getGenres()) {
+                        int aux = user.getHistory().get(title) + genreHashMap.get(stringToGenre(genre));
+                        genreHashMap.put(stringToGenre(genre), aux);
+                    }
                 } else {
-                    serialHashMap.get(title).setNumberViews(serialHashMap.get(title).getNumberViews()
-                            + user.getHistory().get(title));
+                    serialHashMap.get(title).setNumberViews(
+                            serialHashMap.get(title).getNumberViews()
+                                    + user.getHistory().get(title));
+                    for (String genre : serialHashMap.get(title).getGenres()) {
+                        int aux = user.getHistory().get(title) + genreHashMap.get(stringToGenre(genre));
+                        genreHashMap.put(stringToGenre(genre), aux);
+                    }
                 }
+
             }
             for (String title : user.getFavoriteMovies()) {
                 if (movieHashMap.get(title) != null) {
-                    movieHashMap.get(title).setNumberFavorite(movieHashMap.get(title).getNumberFavorite() + 1);
+                    movieHashMap.get(title).setNumberFavorite(
+                            movieHashMap.get(title).getNumberFavorite() + 1);
                 } else {
-                    serialHashMap.get(title).setNumberFavorite(serialHashMap.get(title).getNumberFavorite() + 1);
+                    serialHashMap.get(title).setNumberFavorite(
+                            serialHashMap.get(title).getNumberFavorite() + 1);
                 }
             }
         }
     }
 
-    /**
-     * com
-     */
-    public String switchCasesAction(final Action action) {
+    private void clearRepository() {
+        this.serialHashMap.clear();
+        this.userHashMap.clear();
+        this.movieHashMap.clear();
+        this.actionArray.clear();
+        this.actorHashMap.clear();
+        this.genreHashMap.clear();
+    }
+
+    private String switchCasesAction(final Action action) {
         switch (action.getActionType()) {
             case Constants.COMMAND:
                 return switch (action.getType()) {
@@ -128,17 +159,28 @@ public class Repository {
                         }
                     case Constants.ACTORS:
                         return switch (action.getCriteria()) {
-                            case Constants.AVERAGE -> averageActor(action, movieHashMap,
+                            case Constants.AVERAGE -> average(action, movieHashMap,
                                     serialHashMap, actorHashMap);
-                            case Constants.AWARDS -> awardsActor(action, actorHashMap);
-                            case Constants.FILTER_DESCRIPTIONS -> filterDescriptionActor(action, actorHashMap);
+                            case Constants.AWARDS -> awards(action, actorHashMap);
+                            case Constants.FILTER_DESCRIPTIONS -> filterDescription(action,
+                                    actorHashMap);
                             default -> Constants.DEFAULT_CASE_STRING;
                         };
                     default:
                         return Constants.DEFAULT_CASE_STRING;
                 }
             case Constants.RECOMMENDATION:
-                return "";
+                return switch (action.getType()) {
+                    case Constants.STANDARD -> userHashMap.get(action.getUsername()).standard(movieHashMap,
+                            serialHashMap);
+                    case Constants.BESTUNSEEN -> userHashMap.get(action.getUsername()).bestUnseen(movieHashMap,
+                            serialHashMap);
+                    case Constants.POPULAR -> userHashMap.get(action.getUsername()).popularPremium(movieHashMap,
+                            serialHashMap, genreHashMap);
+                    case Constants.FAVORITE -> Constants.DEFAULT_CASE_STRING;
+                    case Constants.SEARCH -> Constants.DEFAULT_CASE_STRING;
+                    default -> Constants.DEFAULT_CASE_STRING;
+                };
             default:
                 return Constants.DEFAULT_CASE_STRING;
         }
@@ -147,12 +189,14 @@ public class Repository {
     /**
      * com
      */
-    public void entryPoint(final Input input, final JSONArray arrayResult, final Writer fileWriter) throws IOException {
+    public void entryPoint(final Input input, final JSONArray arrayResult,
+                           final Writer fileWriter) throws IOException {
         this.initialization(input);
-        JSONObject object;
         for (Integer i : actionArray.keySet()) {
-            object = fileWriter.writeFile(actionArray.get(i).getActionId(), null, this.switchCasesAction(actionArray.get(i)));
+            JSONObject object = fileWriter.writeFile(actionArray.get(i).getActionId(),
+                    null, this.switchCasesAction(actionArray.get(i)));
             arrayResult.add(object);
         }
+        this.clearRepository();
     }
 }

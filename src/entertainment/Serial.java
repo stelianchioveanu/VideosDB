@@ -7,6 +7,8 @@ import fileio.SerialInputData;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static common.Output.outputSerialCommand;
+
 public final class Serial extends Video {
     private final int numberSeasons;
     private final ArrayList<Season> seasons;
@@ -114,32 +116,6 @@ public final class Serial extends Video {
             return Double.compare(o1.getRating(), o2.getRating());
         });
         return outputSerialCommand(sortedArray, action);
-    }
-
-    /**
-     * com
-     */
-    public static String outputSerialCommand(final ArrayList<Serial> sortedArray,
-                                             final Action action) {
-        String output;
-        StringBuilder outputBuilder = new StringBuilder();
-        if (action.getSortType().equals("asc")) {
-            for (int i = 0; i < Math.min(action.getNumber(), sortedArray.size()); i++) {
-                outputBuilder.append(sortedArray.get(i).title);
-                if (i != Math.min(action.getNumber(), sortedArray.size()) - 1) {
-                    outputBuilder.append(", ");
-                }
-            }
-        } else {
-            for (int i = sortedArray.size() - 1; i >= Math.max(sortedArray.size() - action.getNumber(), 0); i--) {
-                outputBuilder.append(sortedArray.get(i).title);
-                if (i != Math.max(0, sortedArray.size() - action.getNumber())) {
-                    outputBuilder.append(", ");
-                }
-            }
-        }
-        output = outputBuilder.toString();
-        return "Query result: [" + output + "]";
     }
 
     @Override

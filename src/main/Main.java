@@ -71,9 +71,7 @@ public final class Main {
         JSONArray arrayResult = new JSONArray();
 
         //TODO add here the entry point to your implementation
-        Repository star = new Repository();
-        star.entryPoint(input, arrayResult, fileWriter);
-
+        Repository.getInstance().entryPoint(input, arrayResult, fileWriter);
         fileWriter.closeJSON(arrayResult);
     }
 }

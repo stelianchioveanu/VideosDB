@@ -7,6 +7,8 @@ import fileio.MovieInputData;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static common.Output.outputMovieCommand;
+
 public final class Movie extends Video {
     private final int duration;
     private int numberRatings;
@@ -111,32 +113,6 @@ public final class Movie extends Video {
         return outputMovieCommand(sortedArray, action);
     }
 
-    /**
-     * com
-     */
-    public static String outputMovieCommand(final ArrayList<Movie> sortedArray,
-                                            final Action action) {
-        String output;
-        StringBuilder outputBuilder = new StringBuilder();
-        if (action.getSortType().equals("asc")) {
-            for (int i = 0; i < Math.min(action.getNumber(), sortedArray.size()); i++) {
-                outputBuilder.append(sortedArray.get(i).title);
-                if (i != Math.min(action.getNumber(), sortedArray.size()) - 1) {
-                    outputBuilder.append(", ");
-                }
-            }
-        } else {
-            for (int i = sortedArray.size() - 1; i >= Math.max(sortedArray.size() - action.getNumber(), 0); i--) {
-                outputBuilder.append(sortedArray.get(i).title);
-                if (i != Math.max(0, sortedArray.size() - action.getNumber())) {
-                    outputBuilder.append(", ");
-                }
-            }
-        }
-        output = outputBuilder.toString();
-        return "Query result: [" + output + "]";
-    }
-
     public int getDuration() {
         return duration;
     }
@@ -150,11 +126,11 @@ public final class Movie extends Video {
         return this.rating;
     }
 
-    public void setNumberRatings(final int numberRatings) {
+    public void setNumberRatings(int numberRatings) {
         this.numberRatings = numberRatings;
     }
 
-    public void setRating(final double rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 }

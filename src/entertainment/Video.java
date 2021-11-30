@@ -3,12 +3,12 @@ package entertainment;
 import java.util.ArrayList;
 
 public abstract class Video {
-    protected final int year;
-    protected final String title;
-    protected final ArrayList<String> genres;
+    protected int year;
+    protected String title;
+    protected ArrayList<String> genres;
     protected int numberViews;
     protected int numberFavorite;
-    protected final ArrayList<String> cast;
+    protected ArrayList<String> cast;
 
     public Video(final int year, final String title,
                  final ArrayList<String> genres,

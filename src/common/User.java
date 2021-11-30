@@ -1,5 +1,6 @@
 package common;
 
+import entertainment.Genre;
 import entertainment.Movie;
 import entertainment.Serial;
 import entertainment.Season;
@@ -7,14 +8,16 @@ import fileio.UserInputData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import static common.Output.outputUserCommand;
 
 public final class User {
     private final String username;
     private final String subscriptionType;
     private final Map<String, Integer> history;
     private final ArrayList<String> favoriteMovies;
-
     private final HashMap<String, Movie> ratedMovies;
     private final HashMap<Season, Integer> ratedSeasons;
 
@@ -25,10 +28,6 @@ public final class User {
         this.favoriteMovies = userInputData.getFavoriteMovies();
         this.ratedMovies = new HashMap<>();
         this.ratedSeasons = new HashMap<>();
-    }
-
-    public String getSubscriptionType() {
-        return subscriptionType;
     }
 
     public ArrayList<String> getFavoriteMovies() {
@@ -87,7 +86,8 @@ public final class User {
         if (action.getSeasonNumber() == 0) {
             return ratingMovie(action.getTitle(), movieHashMap, action.getGrade());
         }
-        return ratingSerial(action.getTitle(), serialHashMap, action.getSeasonNumber(), action.getGrade());
+        return ratingSerial(action.getTitle(), serialHashMap,
+                action.getSeasonNumber(), action.getGrade());
     }
 
     /**
@@ -113,7 +113,8 @@ public final class User {
     public String ratingSerial(final String title, final HashMap<String, Serial> serialHashMap,
                                final int seasonNumber, final double grade) {
         if (this.history.get(title) != null) {
-            if (this.ratedSeasons.get(serialHashMap.get(title).getSeasons().get(seasonNumber - 1)) != null) {
+            if (this.ratedSeasons.get(serialHashMap.get(title).getSeasons().get(seasonNumber - 1))
+                    != null) {
                 return "error -> " + title + " has been already rated";
             }
             this.ratedSeasons.put(serialHashMap.get(title).getSeasons().get(seasonNumber - 1), 1);
@@ -145,27 +146,73 @@ public final class User {
         return outputUserCommand(sortedArray, action);
     }
 
-    /**
-     * com
-     */
-    public static String outputUserCommand(final ArrayList<User> sortedArray,
-                                           final Action action) {
-        StringBuilder output = new StringBuilder();
-        if (action.getSortType().equals("asc")) {
-            for (int i = 0; i < Math.min(action.getNumber(), sortedArray.size()); i++) {
-                output.append(sortedArray.get(i).username);
-                if (i != Math.min(action.getNumber(), sortedArray.size()) - 1) {
-                    output.append(", ");
+    public String standard(final HashMap<String, Movie> movieHashMap,
+                           final HashMap<String, Serial> serialHashMap) {
+        for (String key : movieHashMap.keySet()) {
+            if (!this.getHistory().containsKey(key)) {
+                return "StandardRecommendation result: " + key;
+            }
+        }
+        for (String key : movieHashMap.keySet()) {
+            if (!this.getHistory().containsKey(key)) {
+                return "StandardRecommendation result: " + key;
+            }
+        }
+        return "StandardRecommendation cannot be applied!";
+    }
+
+    public String bestUnseen(final HashMap<String, Movie> movieHashMap,
+                             final HashMap<String, Serial> serialHashMap) {
+        String title = "";
+        double bestRating = -1;
+        for (String key : movieHashMap.keySet()) {
+            if (!this.getHistory().containsKey(key)
+                    && (Double.compare(bestRating, movieHashMap.get(key).getRating()) < 0)) {
+                title = key;
+                bestRating = movieHashMap.get(key).getRating();
+            }
+        }
+        for (String key : serialHashMap.keySet()) {
+            if (!this.getHistory().containsKey(key)
+                    && (Double.compare(bestRating, serialHashMap.get(key).getRating()) < 0)) {
+                title = key;
+                bestRating = serialHashMap.get(key).getRating();
+            }
+        }
+        if(title.equals("")){
+            return "BestRatedUnseenRecommendation cannot be applied!";
+        }
+        return "BestRatedUnseenRecommendation result: " + title;
+    }
+
+    public String popularPremium(final HashMap<String, Movie> movieHashMap,
+                                 final HashMap<String, Serial> serialHashMap,
+                                 final HashMap<Genre, Integer> genreHashMap){
+        if(this.subscriptionType.equals("BASIC"))
+            return "PopularRecommendation cannot be applied!";
+        ArrayList<Map.Entry<Genre, Integer>> genreEntrySetSorted = new ArrayList<>(genreHashMap.entrySet());
+        genreEntrySetSorted.sort((o1, o2) -> o1.getValue() - o2.getValue());
+
+        for (var entry : genreEntrySetSorted){
+            for (String key : movieHashMap.keySet()) {
+                if (!this.getHistory().containsKey(key)) {
+                    for (var genre : movieHashMap.get(key).getGenres()) {
+                        if (genre.toUpperCase(Locale.ROOT).equals(entry.getKey().toString())) {
+                            return "PopularRecommendation result: " + movieHashMap.get(key).getTitle();
+                        }
+                    }
                 }
             }
-        } else {
-            for (int i = sortedArray.size() - 1; i >= Math.max(sortedArray.size() - action.getNumber(), 0); i--) {
-                output.append(sortedArray.get(i).username);
-                if (i != Math.max(0, sortedArray.size() - action.getNumber())) {
-                    output.append(", ");
+            for (String key : serialHashMap.keySet()) {
+                if (!this.getHistory().containsKey(key)) {
+                    for (var genre : serialHashMap.get(key).getGenres()) {
+                        if (genre.toUpperCase(Locale.ROOT).equals(entry.getKey().toString())) {
+                            return "PopularRecommendation result: " + serialHashMap.get(key).getTitle();
+                        }
+                    }
                 }
             }
         }
-        return "Query result: [" + output + "]";
+        return "PopularRecommendation cannot be applied!";
     }
 }

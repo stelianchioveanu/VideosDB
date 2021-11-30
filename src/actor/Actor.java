@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static utils.Utils.stringToAwards;
+import static common.Output.outputActorCommand;
 
 public final class Actor {
     private final String name;
@@ -28,10 +29,6 @@ public final class Actor {
 
     public String getName() {
         return name;
-    }
-
-    public String getCareerDescription() {
-        return careerDescription;
     }
 
     public ArrayList<String> getFilmography() {
@@ -82,7 +79,7 @@ public final class Actor {
     /**
      * com
      */
-    public static String averageActor(final Action action,
+    public static String average(final Action action,
                                       final HashMap<String, Movie> movieHashMap,
                                       final HashMap<String, Serial> serialHashMap,
                                       final HashMap<String, Actor> actorHashMap) {
@@ -106,7 +103,7 @@ public final class Actor {
     /**
      * com
      */
-    public static String awardsActor(final Action action,
+    public static String awards(final Action action,
                                      final HashMap<String, Actor> actorHashMap) {
         ArrayList<Actor> sortedArray = new ArrayList<>();
         for (Actor actor : actorHashMap.values()) {
@@ -133,7 +130,7 @@ public final class Actor {
     /**
      * com
      */
-    public static String filterDescriptionActor(final Action action,
+    public static String filterDescription(final Action action,
                                                 final HashMap<String, Actor> actorHashMap) {
         ArrayList<Actor> sortedArray = new ArrayList<>();
         for (Actor actor : actorHashMap.values()) {
@@ -150,47 +147,5 @@ public final class Actor {
         }
         sortedArray.sort(Comparator.comparing(o -> o.name));
         return outputActorCommand(sortedArray, action);
-    }
-
-    /**
-     * com
-     */
-    public static String outputActorCommand(final ArrayList<Actor> sortedArray,
-                                            final Action action) {
-        String output;
-        StringBuilder outputBuilder = new StringBuilder();
-        if (action.getSortType().equals("asc")) {
-            for (int i = 0; i < Math.min(action.getNumber(), sortedArray.size()); i++) {
-                outputBuilder.append(sortedArray.get(i).name);
-                if (i != Math.min(action.getNumber(), sortedArray.size()) - 1) {
-                    outputBuilder.append(", ");
-                }
-            }
-        } else {
-            for (int i = sortedArray.size() - 1; i >= Math.max(sortedArray.size() - action.getNumber(), 0); i--) {
-                outputBuilder.append(sortedArray.get(i).name);
-                if (i != Math.max(0, sortedArray.size() - action.getNumber())) {
-                    outputBuilder.append(", ");
-                }
-            }
-        }
-        output = outputBuilder.toString();
-        return "Query result: [" + output + "]";
-    }
-
-    @Override
-    public String toString() {
-        return "Actor{"
-                + "name='"
-                + name
-                + '\''
-                + ", careerDescription='"
-                + careerDescription
-                + '\''
-                + ", filmography="
-                + filmography
-                + ", awards="
-                + awards
-                + '}';
     }
 }
