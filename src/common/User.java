@@ -1,14 +1,15 @@
 package common;
 
-import entertainment.*;
+import entertainment.Movie;
+import entertainment.Serial;
+import entertainment.Season;
 import fileio.UserInputData;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User {
+public final class User {
     private final String username;
     private final String subscriptionType;
     private final Map<String, Integer> history;
@@ -133,16 +134,13 @@ public class User {
                 sortedArray.add(user);
             }
         }
-        sortedArray.sort(new Comparator<>() {
-            @Override
-            public int compare(User o1, User o2) {
-                if (o1.ratedSeasons.size() + o1.ratedMovies.size()
-                        - o2.ratedSeasons.size() - o2.ratedMovies.size() == 0) {
-                    return o1.username.compareTo(o2.username);
-                }
-                return (o1.ratedSeasons.size() + o1.ratedMovies.size()
-                        - o2.ratedSeasons.size() - o2.ratedMovies.size());
+        sortedArray.sort((o1, o2) -> {
+            if (o1.ratedSeasons.size() + o1.ratedMovies.size()
+                    - o2.ratedSeasons.size() - o2.ratedMovies.size() == 0) {
+                return o1.username.compareTo(o2.username);
             }
+            return (o1.ratedSeasons.size() + o1.ratedMovies.size()
+                    - o2.ratedSeasons.size() - o2.ratedMovies.size());
         });
         return outputUserCommand(sortedArray, action);
     }
@@ -152,19 +150,19 @@ public class User {
      */
     public static String outputUserCommand(final ArrayList<User> sortedArray,
                                            final Action action) {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         if (action.getSortType().equals("asc")) {
             for (int i = 0; i < Math.min(action.getNumber(), sortedArray.size()); i++) {
-                output += sortedArray.get(i).username;
+                output.append(sortedArray.get(i).username);
                 if (i != Math.min(action.getNumber(), sortedArray.size()) - 1) {
-                    output += ", ";
+                    output.append(", ");
                 }
             }
         } else {
             for (int i = sortedArray.size() - 1; i >= Math.max(sortedArray.size() - action.getNumber(), 0); i--) {
-                output += sortedArray.get(i).username;
+                output.append(sortedArray.get(i).username);
                 if (i != Math.max(0, sortedArray.size() - action.getNumber())) {
-                    output += ", ";
+                    output.append(", ");
                 }
             }
         }

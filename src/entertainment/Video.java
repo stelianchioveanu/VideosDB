@@ -25,7 +25,7 @@ public abstract class Video {
         return numberFavorite;
     }
 
-    public void setNumberFavorite(int numberFavorite) {
+    public void setNumberFavorite(final int numberFavorite) {
         this.numberFavorite = numberFavorite;
     }
 
@@ -45,7 +45,7 @@ public abstract class Video {
         return numberViews;
     }
 
-    public void setNumberViews(int numberViews) {
+    public void setNumberViews(final int numberViews) {
         this.numberViews = numberViews;
     }
 
@@ -53,5 +53,8 @@ public abstract class Video {
         return cast;
     }
 
+    /**
+     * com
+     */
     public abstract double getRating();
 }

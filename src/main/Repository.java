@@ -7,7 +7,13 @@ import common.User;
 import entertainment.Genre;
 import entertainment.Movie;
 import entertainment.Serial;
-import fileio.*;
+import fileio.ActorInputData;
+import fileio.ActionInputData;
+import fileio.UserInputData;
+import fileio.SerialInputData;
+import fileio.MovieInputData;
+import fileio.Input;
+import fileio.Writer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

@@ -6,7 +6,6 @@ import fileio.MovieInputData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public final class Movie extends Video {
     private final int duration;
