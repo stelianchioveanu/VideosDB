@@ -1,6 +1,9 @@
-package main;
+package repository;
 
 import actor.Actor;
+import commands.Command;
+import commands.Query;
+import commands.Recommendation;
 import common.Action;
 import common.Constants;
 import user.User;
@@ -21,18 +24,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import static entertainment.Movie.longestMovie;
-import static entertainment.Movie.favoriteMovie;
-import static entertainment.Movie.mostViewedMovies;
-import static entertainment.Movie.ratingMovies;
-import static entertainment.Serial.longestSerial;
-import static entertainment.Serial.favoriteSerial;
-import static entertainment.Serial.mostViewedSerial;
-import static entertainment.Serial.ratingSerial;
-import static actor.Actor.awards;
-import static actor.Actor.average;
-import static actor.Actor.filterDescription;
-import static user.User.numberOfRatings;
 import static utils.Utils.stringToGenre;
 
 public final class Repository {
@@ -126,66 +117,77 @@ public final class Repository {
     private String switchCasesAction(final Action action) {
         switch (action.getActionType()) {
             case Constants.COMMAND:
+                Command command = new Command();
                 return switch (action.getType()) {
-                    case Constants.VIEW -> this.userHashMap.get(
-                            action.getUsername()).view(action, movieHashMap, serialHashMap);
-                    case Constants.FAVORITE -> this.userHashMap.get(
-                            action.getUsername()).favorite(action, movieHashMap, serialHashMap);
-                    case Constants.RATING -> this.userHashMap.get(
-                            action.getUsername()).rating(action, movieHashMap, serialHashMap);
+                    case Constants.VIEW -> command.view(action, movieHashMap,
+                            serialHashMap, this.userHashMap.get(action.getUsername()));
+                    case Constants.FAVORITE -> command.favorite(action, movieHashMap,
+                            serialHashMap, this.userHashMap.get(action.getUsername()));
+                    case Constants.RATING -> command.rating(action, movieHashMap,
+                            serialHashMap, this.userHashMap.get(action.getUsername()));
                     default -> Constants.DEFAULT_CASE_STRING;
                 };
             case Constants.QUERY:
+                Query query = new Query();
                 switch (action.getObjectType()) {
                     case Constants.MOVIES:
                         return switch (action.getCriteria()) {
-                            case Constants.MOST_VIEWED -> mostViewedMovies(action, movieHashMap);
-                            case Constants.LONGEST -> longestMovie(action, movieHashMap);
-                            case Constants.FAVORITE -> favoriteMovie(action, movieHashMap);
-                            case Constants.RATINGS -> ratingMovies(action, movieHashMap);
+                            case Constants.MOST_VIEWED -> query.mostViewed(
+                                    action, movieHashMap, null);
+                            case Constants.LONGEST -> query.longest(
+                                    action, movieHashMap, null);
+                            case Constants.FAVORITE -> query.favorite(
+                                    action, movieHashMap, null);
+                            case Constants.RATINGS -> query.rating(
+                                    action, movieHashMap, null);
                             default -> Constants.DEFAULT_CASE_STRING;
                         };
                     case Constants.SHOWS:
                         return switch (action.getCriteria()) {
-                            case Constants.MOST_VIEWED -> mostViewedSerial(action, serialHashMap);
-                            case Constants.LONGEST -> longestSerial(action, serialHashMap);
-                            case Constants.FAVORITE -> favoriteSerial(action, serialHashMap);
-                            case Constants.RATINGS -> ratingSerial(action, serialHashMap);
+                            case Constants.MOST_VIEWED -> query.mostViewed(
+                                    action, null, serialHashMap);
+                            case Constants.LONGEST -> query.longest(
+                                    action, null, serialHashMap);
+                            case Constants.FAVORITE -> query.favorite(
+                                    action, null, serialHashMap);
+                            case Constants.RATINGS -> query.rating(
+                                    action, null, serialHashMap);
                             default -> Constants.DEFAULT_CASE_STRING;
                         };
                     case Constants.USERS:
                         if (action.getCriteria().equals(Constants.NUM_RATINGS)) {
-                            return numberOfRatings(action, userHashMap);
+                            return query.numberOfRatings(action, userHashMap);
                         }
                     case Constants.ACTORS:
                         return switch (action.getCriteria()) {
-                            case Constants.AVERAGE -> average(action, movieHashMap,
+                            case Constants.AVERAGE -> query.average(action, movieHashMap,
                                     serialHashMap, actorHashMap);
-                            case Constants.AWARDS -> awards(action, actorHashMap);
-                            case Constants.FILTER_DESCRIPTIONS -> filterDescription(action,
-                                    actorHashMap);
+                            case Constants.AWARDS -> query.awards(action, actorHashMap);
+                            case Constants.FILTER_DESCRIPTIONS -> query.filterDescription(
+                                    action, actorHashMap);
                             default -> Constants.DEFAULT_CASE_STRING;
                         };
                     default:
                         return Constants.DEFAULT_CASE_STRING;
                 }
             case Constants.RECOMMENDATION:
+                Recommendation recommendation = new Recommendation();
                 return switch (action.getType()) {
-                    case Constants.STANDARD -> userHashMap.get(
-                            action.getUsername()).standard(
-                            movieHashMap, serialHashMap);
-                    case Constants.BEST_UNSEEN -> userHashMap.get(
-                            action.getUsername()).bestUnseen(
-                            movieHashMap, serialHashMap);
-                    case Constants.POPULAR -> userHashMap.get(
-                            action.getUsername()).popularPremium(
-                            movieHashMap, serialHashMap, genreHashMap);
-                    case Constants.FAVORITE -> userHashMap.get(
-                            action.getUsername()).favoritePremium(
-                            movieHashMap, serialHashMap);
-                    case Constants.SEARCH -> userHashMap.get(
-                            action.getUsername()).searchPremium(
-                            movieHashMap, serialHashMap, action.getGenre());
+                    case Constants.STANDARD -> recommendation.standard(
+                            movieHashMap, serialHashMap, userHashMap.get(
+                                    action.getUsername()));
+                    case Constants.BEST_UNSEEN -> recommendation.bestUnseen(
+                            movieHashMap, serialHashMap, userHashMap.get(
+                                    action.getUsername()));
+                    case Constants.POPULAR -> recommendation.popularPremium(
+                            movieHashMap, serialHashMap, genreHashMap, userHashMap.get(
+                                    action.getUsername()));
+                    case Constants.FAVORITE -> recommendation.favoritePremium(
+                            movieHashMap, serialHashMap, userHashMap.get(
+                                    action.getUsername()));
+                    case Constants.SEARCH -> recommendation.searchPremium(
+                            movieHashMap, serialHashMap, action.getGenre(), userHashMap.get(
+                                    action.getUsername()));
                     default -> Constants.DEFAULT_CASE_STRING;
                 };
             default:

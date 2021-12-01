@@ -1,8 +1,7 @@
 package common;
 
 import actor.Actor;
-import entertainment.Movie;
-import entertainment.Serial;
+import entertainment.Video;
 import user.User;
 
 import java.util.ArrayList;
@@ -15,46 +14,28 @@ public final class Output {
     /**
      * com
      */
-    public static String outputMovieCommand(final ArrayList<Movie> sortedArray,
+    public static String outputVideoCommand(final ArrayList<Video> sortedArray,
                                             final Action action) {
         StringBuilder outputBuilder = new StringBuilder();
         if (action.getSortType().equals("asc")) {
-            for (int i = 0; i < Math.min(action.getNumber(), sortedArray.size()); i++) {
-                outputBuilder.append(sortedArray.get(i).getTitle());
-                if (i != Math.min(action.getNumber(), sortedArray.size()) - 1) {
+            int start = 0;
+            int end = Math.min(action.getNumber(), sortedArray.size());
+            while (start < end) {
+                outputBuilder.append(sortedArray.get(start).getTitle());
+                if (start != end - 1) {
                     outputBuilder.append(", ");
                 }
+                start++;
             }
         } else {
-            for (int i = sortedArray.size() - 1; i >= Math.max(sortedArray.size() - action.getNumber(), 0); i--) {
-                outputBuilder.append(sortedArray.get(i).getTitle());
-                if (i != Math.max(0, sortedArray.size() - action.getNumber())) {
+            int start = sortedArray.size() - 1;
+            int end = Math.max(sortedArray.size() - action.getNumber(), 0);
+            while (start >= end) {
+                outputBuilder.append(sortedArray.get(start).getTitle());
+                if (start != end) {
                     outputBuilder.append(", ");
                 }
-            }
-        }
-        return "Query result: [" + outputBuilder + "]";
-    }
-
-    /**
-     * com
-     */
-    public static String outputSerialCommand(final ArrayList<Serial> sortedArray,
-                                             final Action action) {
-        StringBuilder outputBuilder = new StringBuilder();
-        if (action.getSortType().equals("asc")) {
-            for (int i = 0; i < Math.min(action.getNumber(), sortedArray.size()); i++) {
-                outputBuilder.append(sortedArray.get(i).getTitle());
-                if (i != Math.min(action.getNumber(), sortedArray.size()) - 1) {
-                    outputBuilder.append(", ");
-                }
-            }
-        } else {
-            for (int i = sortedArray.size() - 1; i >= Math.max(sortedArray.size() - action.getNumber(), 0); i--) {
-                outputBuilder.append(sortedArray.get(i).getTitle());
-                if (i != Math.max(0, sortedArray.size() - action.getNumber())) {
-                    outputBuilder.append(", ");
-                }
+                start--;
             }
         }
         return "Query result: [" + outputBuilder + "]";
@@ -67,18 +48,24 @@ public final class Output {
                                             final Action action) {
         StringBuilder outputBuilder = new StringBuilder();
         if (action.getSortType().equals("asc")) {
-            for (int i = 0; i < Math.min(action.getNumber(), sortedArray.size()); i++) {
-                outputBuilder.append(sortedArray.get(i).getName());
-                if (i != Math.min(action.getNumber(), sortedArray.size()) - 1) {
+            int start = 0;
+            int end = Math.min(action.getNumber(), sortedArray.size());
+            while (start < end) {
+                outputBuilder.append(sortedArray.get(start).getName());
+                if (start != end - 1) {
                     outputBuilder.append(", ");
                 }
+                start++;
             }
         } else {
-            for (int i = sortedArray.size() - 1; i >= Math.max(sortedArray.size() - action.getNumber(), 0); i--) {
-                outputBuilder.append(sortedArray.get(i).getName());
-                if (i != Math.max(0, sortedArray.size() - action.getNumber())) {
+            int start = sortedArray.size() - 1;
+            int end = Math.max(sortedArray.size() - action.getNumber(), 0);
+            while (start >= end) {
+                outputBuilder.append(sortedArray.get(start).getName());
+                if (start != end) {
                     outputBuilder.append(", ");
                 }
+                start--;
             }
         }
         return "Query result: [" + outputBuilder + "]";
@@ -91,18 +78,24 @@ public final class Output {
                                            final Action action) {
         StringBuilder outputBuilder = new StringBuilder();
         if (action.getSortType().equals("asc")) {
-            for (int i = 0; i < Math.min(action.getNumber(), sortedArray.size()); i++) {
-                outputBuilder.append(sortedArray.get(i).getUsername());
-                if (i != Math.min(action.getNumber(), sortedArray.size()) - 1) {
+            int start = 0;
+            int end = Math.min(action.getNumber(), sortedArray.size());
+            while (start < end) {
+                outputBuilder.append(sortedArray.get(start).getUsername());
+                if (start != end - 1) {
                     outputBuilder.append(", ");
                 }
+                start++;
             }
         } else {
-            for (int i = sortedArray.size() - 1; i >= Math.max(sortedArray.size() - action.getNumber(), 0); i--) {
-                outputBuilder.append(sortedArray.get(i).getUsername());
-                if (i != Math.max(0, sortedArray.size() - action.getNumber())) {
+            int start = sortedArray.size() - 1;
+            int end = Math.max(sortedArray.size() - action.getNumber(), 0);
+            while (start >= end) {
+                outputBuilder.append(sortedArray.get(start).getUsername());
+                if (start != end) {
                     outputBuilder.append(", ");
                 }
+                start--;
             }
         }
         return "Query result: [" + outputBuilder + "]";

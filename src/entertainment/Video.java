@@ -12,6 +12,7 @@ public abstract class Video {
     protected int numberViews;
     protected int numberFavorite;
     protected ArrayList<String> cast;
+    protected int duration;
 
     public Video(final int year, final String title,
                  final ArrayList<String> genres,
@@ -20,16 +21,9 @@ public abstract class Video {
         this.genres = genres;
         this.year = year;
         this.title = title;
+        this.duration = 0;
         this.numberViews = 0;
         this.numberFavorite = 0;
-    }
-
-    public final int getNumberFavorite() {
-        return numberFavorite;
-    }
-
-    public final void setNumberFavorite(final int numberFavorite) {
-        this.numberFavorite = numberFavorite;
     }
 
     public final int getYear() {
@@ -48,16 +42,31 @@ public abstract class Video {
         return numberViews;
     }
 
-    public final void setNumberViews(final int numberViews) {
-        this.numberViews = numberViews;
+    public final int getNumberFavorite() {
+        return numberFavorite;
     }
 
     public final ArrayList<String> getCast() {
         return cast;
     }
 
+    public final void setNumberViews(final int numberViews) {
+        this.numberViews = numberViews;
+    }
+
+    public final void setNumberFavorite(final int numberFavorite) {
+        this.numberFavorite = numberFavorite;
+    }
+
     /**
      * com
      */
     public abstract double getRating();
+
+    /**
+     * com
+     */
+    public int getDuration() {
+        return duration;
+    }
 }

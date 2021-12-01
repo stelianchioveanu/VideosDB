@@ -1,7 +1,5 @@
 package actor;
 
-import common.Action;
-import common.Constants;
 import entertainment.Movie;
 import entertainment.Serial;
 import fileio.ActorInputData;
@@ -9,11 +7,6 @@ import fileio.ActorInputData;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Comparator;
-
-import static utils.Utils.stringToAwards;
-import static common.Output.outputActorCommand;
 
 public final class Actor {
     private final String name;
@@ -32,6 +25,10 @@ public final class Actor {
         return name;
     }
 
+    public String getCareerDescription() {
+        return careerDescription;
+    }
+
     public ArrayList<String> getFilmography() {
         return filmography;
     }
@@ -46,108 +43,29 @@ public final class Actor {
     public double getActorRating(final HashMap<String, Movie> movieHashMap,
                                  final HashMap<String, Serial> serialHashMap) {
         double rating = 0;
-        int nr = 0;
+        int numberRatings = 0;
         for (String title : this.filmography) {
             if (movieHashMap.get(title) != null
                     && movieHashMap.get(title).getRating() != 0) {
                 rating += movieHashMap.get(title).getRating();
-                nr++;
+                numberRatings++;
             }
             if (serialHashMap.get(title) != null
                     && serialHashMap.get(title).getRating() != 0) {
                 rating += serialHashMap.get(title).getRating();
-                nr++;
+                numberRatings++;
             }
         }
-        if (nr == 0) {
+        if (numberRatings == 0) {
             return 0;
         }
-        rating /= nr;
-        return rating;
+        return rating / numberRatings;
     }
 
     /**
      * com
      */
     public int getActorNumberAwards() {
-        return this.awards.values().stream().reduce(0, Integer ::sum);
-    }
-
-    /**
-     * com
-     */
-    public static String average(final Action action,
-                                 final HashMap<String, Movie> movieHashMap,
-                                 final HashMap<String, Serial> serialHashMap,
-                                 final HashMap<String, Actor> actorHashMap) {
-        ArrayList<Actor> sortedArray = new ArrayList<>();
-        for (Actor actor : actorHashMap.values()) {
-            if (actor.getActorRating(movieHashMap, serialHashMap) != 0) {
-                sortedArray.add(actor);
-            }
-        }
-        sortedArray.sort((o1, o2) -> {
-            if (Double.compare(o1.getActorRating(movieHashMap, serialHashMap),
-                    o2.getActorRating(movieHashMap, serialHashMap)) == 0) {
-                return o1.name.compareTo(o2.name);
-            }
-            return Double.compare(o1.getActorRating(movieHashMap, serialHashMap),
-                    o2.getActorRating(movieHashMap, serialHashMap));
-        });
-        return outputActorCommand(sortedArray, action);
-    }
-
-    /**
-     * com
-     */
-    public static String awards(final Action action,
-                                final HashMap<String, Actor> actorHashMap) {
-        ArrayList<Actor> sortedArray = new ArrayList<>();
-        for (Actor actor : actorHashMap.values()) {
-            boolean aux = true;
-            for (String award : action.getFilters().get(Constants.AWARD_INDEX)) {
-                if (actor.awards.get(stringToAwards(award)) == null) {
-                    aux = false;
-                    break;
-                }
-            }
-            if (aux) {
-                sortedArray.add(actor);
-            }
-        }
-        sortedArray.sort((o1, o2) -> {
-            if (o1.getActorNumberAwards() == o2.getActorNumberAwards()) {
-                return o1.name.compareTo(o2.name);
-            }
-            return o1.getActorNumberAwards() - o2.getActorNumberAwards();
-        });
-        return outputActorCommand(sortedArray, action);
-    }
-
-    /**
-     * com
-     */
-    public static String filterDescription(final Action action,
-                                           final HashMap<String, Actor> actorHashMap) {
-        ArrayList<Actor> sortedArray = new ArrayList<>();
-        for (Actor actor : actorHashMap.values()) {
-            int aux = 0;
-            for (String description : action.getFilters().get(Constants.DESCRIPTION_INDEX)) {
-                Scanner scan = new Scanner(actor.careerDescription);
-                scan.useDelimiter("\\W+");
-                while (scan.hasNext()) {
-                    if (scan.next().toLowerCase().equals(description)) {
-                        aux++;
-                        break;
-                    }
-                }
-                scan.close();
-            }
-            if (aux == action.getFilters().get(Constants.DESCRIPTION_INDEX).size()) {
-                sortedArray.add(actor);
-            }
-        }
-        sortedArray.sort(Comparator.comparing(o -> o.name));
-        return outputActorCommand(sortedArray, action);
+        return this.awards.values().stream().reduce(0, Integer::sum);
     }
 }

@@ -1,7 +1,2 @@
 Starting audit...
-[ERROR] C:\Users\Stelian\Desktop\tema\.\src\common\Output.java:29: Line is longer than 100 characters (found 114). [LineLength]
-[ERROR] C:\Users\Stelian\Desktop\tema\.\src\common\Output.java:53: Line is longer than 100 characters (found 114). [LineLength]
-[ERROR] C:\Users\Stelian\Desktop\tema\.\src\common\Output.java:77: Line is longer than 100 characters (found 114). [LineLength]
-[ERROR] C:\Users\Stelian\Desktop\tema\.\src\common\Output.java:101: Line is longer than 100 characters (found 114). [LineLength]
 Audit done.
-Checkstyle ends with 4 errors.
