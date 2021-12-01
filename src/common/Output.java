@@ -7,7 +7,11 @@ import user.User;
 
 import java.util.ArrayList;
 
-public class Output {
+public final class Output {
+
+    private Output() {
+    }
+
     /**
      * com
      */

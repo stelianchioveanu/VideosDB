@@ -6,7 +6,11 @@ import entertainment.Movie;
 import entertainment.Serial;
 import fileio.ActorInputData;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.Comparator;
 
 import static utils.Utils.stringToAwards;
 import static common.Output.outputActorCommand;
@@ -66,20 +70,16 @@ public final class Actor {
      * com
      */
     public int getActorNumberAwards() {
-        int sum = 0;
-        for (Integer i : this.awards.values()) {
-            sum += i;
-        }
-        return sum;
+        return this.awards.values().stream().reduce(0, Integer ::sum);
     }
 
     /**
      * com
      */
     public static String average(final Action action,
-                                      final HashMap<String, Movie> movieHashMap,
-                                      final HashMap<String, Serial> serialHashMap,
-                                      final HashMap<String, Actor> actorHashMap) {
+                                 final HashMap<String, Movie> movieHashMap,
+                                 final HashMap<String, Serial> serialHashMap,
+                                 final HashMap<String, Actor> actorHashMap) {
         ArrayList<Actor> sortedArray = new ArrayList<>();
         for (Actor actor : actorHashMap.values()) {
             if (actor.getActorRating(movieHashMap, serialHashMap) != 0) {
@@ -101,7 +101,7 @@ public final class Actor {
      * com
      */
     public static String awards(final Action action,
-                                     final HashMap<String, Actor> actorHashMap) {
+                                final HashMap<String, Actor> actorHashMap) {
         ArrayList<Actor> sortedArray = new ArrayList<>();
         for (Actor actor : actorHashMap.values()) {
             boolean aux = true;
@@ -135,8 +135,8 @@ public final class Actor {
             for (String description : action.getFilters().get(Constants.DESCRIPTION_INDEX)) {
                 Scanner scan = new Scanner(actor.careerDescription);
                 scan.useDelimiter("\\W+");
-                while(scan.hasNext()){
-                    if (scan.next().toLowerCase().equals(description)){
+                while (scan.hasNext()) {
+                    if (scan.next().toLowerCase().equals(description)) {
                         aux++;
                         break;
                     }

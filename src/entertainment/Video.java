@@ -24,35 +24,35 @@ public abstract class Video {
         this.numberFavorite = 0;
     }
 
-    public int getNumberFavorite() {
+    public final int getNumberFavorite() {
         return numberFavorite;
     }
 
-    public void setNumberFavorite(final int numberFavorite) {
+    public final void setNumberFavorite(final int numberFavorite) {
         this.numberFavorite = numberFavorite;
     }
 
-    public int getYear() {
+    public final int getYear() {
         return year;
     }
 
-    public String getTitle() {
+    public final String getTitle() {
         return title;
     }
 
-    public ArrayList<String> getGenres() {
+    public final ArrayList<String> getGenres() {
         return genres;
     }
 
-    public int getNumberViews() {
+    public final int getNumberViews() {
         return numberViews;
     }
 
-    public void setNumberViews(final int numberViews) {
+    public final void setNumberViews(final int numberViews) {
         this.numberViews = numberViews;
     }
 
-    public ArrayList<String> getCast() {
+    public final ArrayList<String> getCast() {
         return cast;
     }
 

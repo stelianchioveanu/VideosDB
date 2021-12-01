@@ -54,11 +54,16 @@ public final class User {
                        final HashMap<String, Serial> serialHashMap) {
         this.history.merge(action.getTitle(), 1, Integer::sum);
         if (movieHashMap.get(action.getTitle()) != null) {
-            movieHashMap.get(action.getTitle()).setNumberViews(movieHashMap.get(action.getTitle()).getNumberViews() + 1);
+            movieHashMap.get(action.getTitle()).setNumberViews(
+                    movieHashMap.get(action.getTitle()).getNumberViews() + 1);
         } else {
-            serialHashMap.get(action.getTitle()).setNumberViews(serialHashMap.get(action.getTitle()).getNumberViews() + 1);
+            serialHashMap.get(action.getTitle()).setNumberViews(
+                    serialHashMap.get(action.getTitle()).getNumberViews() + 1);
         }
-        return "success -> " + action.getTitle() + " was viewed with total views of " + this.history.get(action.getTitle());
+        return "success -> "
+                + action.getTitle()
+                + " was viewed with total views of "
+                + this.history.get(action.getTitle());
     }
 
     /**
@@ -74,9 +79,11 @@ public final class User {
             }
             this.favoriteMovies.add(action.getTitle());
             if (movieHashMap.get(action.getTitle()) != null) {
-                movieHashMap.get(action.getTitle()).setNumberFavorite(movieHashMap.get(action.getTitle()).getNumberFavorite() + 1);
+                movieHashMap.get(action.getTitle()).setNumberFavorite(
+                        movieHashMap.get(action.getTitle()).getNumberFavorite() + 1);
             } else {
-                serialHashMap.get(action.getTitle()).setNumberFavorite(serialHashMap.get(action.getTitle()).getNumberFavorite() + 1);
+                serialHashMap.get(action.getTitle()).setNumberFavorite(
+                        serialHashMap.get(action.getTitle()).getNumberFavorite() + 1);
             }
             return "success -> " + action.getTitle() + " was added as favourite";
         }
@@ -154,6 +161,9 @@ public final class User {
         return outputUserCommand(sortedArray, action);
     }
 
+    /**
+     * com
+     */
     public String standard(final HashMap<String, Movie> movieHashMap,
                            final HashMap<String, Serial> serialHashMap) {
         for (String key : movieHashMap.keySet()) {
@@ -169,6 +179,9 @@ public final class User {
         return "StandardRecommendation cannot be applied!";
     }
 
+    /**
+     * com
+     */
     public String bestUnseen(final HashMap<String, Movie> movieHashMap,
                              final HashMap<String, Serial> serialHashMap) {
         String title = "";
@@ -193,6 +206,9 @@ public final class User {
         return "BestRatedUnseenRecommendation result: " + title;
     }
 
+    /**
+     * com
+     */
     public String popularPremium(final HashMap<String, Movie> movieHashMap,
                                  final HashMap<String, Serial> serialHashMap,
                                  final HashMap<Genre, Integer> genreHashMap) {
@@ -227,9 +243,12 @@ public final class User {
         return "PopularRecommendation cannot be applied!";
     }
 
+    /**
+     * com
+     */
     public String searchPremium(final HashMap<String, Movie> movieHashMap,
                                 final HashMap<String, Serial> serialHashMap,
-                                String genre) {
+                                final String genre) {
         if (this.subscriptionType.equals("BASIC")) {
             return "SearchRecommendation cannot be applied!";
         }
@@ -271,6 +290,9 @@ public final class User {
         return "SearchRecommendation cannot be applied!";
     }
 
+    /**
+     * com
+     */
     public String favoritePremium(final HashMap<String, Movie> movieHashMap,
                                   final HashMap<String, Serial> serialHashMap) {
         if (this.subscriptionType.equals("BASIC")) {

@@ -120,22 +120,14 @@ public final class Serial extends Video {
 
     @Override
     public double getRating() {
-        double rating = 0;
-        for (Season i : this.seasons) {
-            if (i.getRatings().size() != 0) {
-                double r = 0;
-                for (double j : i.getRatings()) {
-                    r += j;
-                }
-                r /= i.getRatings().size();
-                rating += r;
+        double serialRating = 0;
+        for (Season season : this.seasons) {
+            if (season.getRatings().size() != 0) {
+                serialRating += season.getRatings().stream().reduce(0.0, Double::sum)
+                        / season.getRatings().size();
             }
         }
-        if (rating == 0) {
-            return 0;
-        }
-        rating /= this.numberSeasons;
-        return rating;
+        return serialRating / this.numberSeasons;
     }
 
     public ArrayList<Season> getSeasons() {
