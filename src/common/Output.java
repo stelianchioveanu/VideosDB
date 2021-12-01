@@ -3,6 +3,7 @@ package common;
 import actor.Actor;
 import entertainment.Movie;
 import entertainment.Serial;
+import user.User;
 
 import java.util.ArrayList;
 

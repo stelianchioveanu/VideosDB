@@ -6,10 +6,7 @@ import entertainment.Movie;
 import entertainment.Serial;
 import fileio.ActorInputData;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static utils.Utils.stringToAwards;
 import static common.Output.outputActorCommand;
@@ -131,17 +128,22 @@ public final class Actor {
      * com
      */
     public static String filterDescription(final Action action,
-                                                final HashMap<String, Actor> actorHashMap) {
+                                           final HashMap<String, Actor> actorHashMap) {
         ArrayList<Actor> sortedArray = new ArrayList<>();
         for (Actor actor : actorHashMap.values()) {
-            boolean aux = true;
+            int aux = 0;
             for (String description : action.getFilters().get(Constants.DESCRIPTION_INDEX)) {
-                if (!actor.careerDescription.contains(description)) {
-                    aux = false;
-                    break;
+                Scanner scan = new Scanner(actor.careerDescription);
+                scan.useDelimiter("\\W+");
+                while(scan.hasNext()){
+                    if (scan.next().equals(description)){
+                        aux++;
+                        break;
+                    }
                 }
+                scan.close();
             }
-            if (aux) {
+            if (aux == action.getFilters().get(Constants.DESCRIPTION_INDEX).size()) {
                 sortedArray.add(actor);
             }
         }

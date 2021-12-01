@@ -3,7 +3,7 @@ package main;
 import actor.Actor;
 import common.Action;
 import common.Constants;
-import common.User;
+import user.User;
 import entertainment.Genre;
 import entertainment.Movie;
 import entertainment.Serial;
@@ -32,7 +32,7 @@ import static entertainment.Serial.ratingSerial;
 import static actor.Actor.awards;
 import static actor.Actor.average;
 import static actor.Actor.filterDescription;
-import static common.User.numberOfRatings;
+import static user.User.numberOfRatings;
 import static utils.Utils.stringToGenre;
 
 public final class Repository {

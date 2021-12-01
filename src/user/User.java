@@ -1,5 +1,6 @@
-package common;
+package user;
 
+import common.Action;
 import entertainment.Genre;
 import entertainment.Movie;
 import entertainment.Serial;
