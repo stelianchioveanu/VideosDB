@@ -1,38 +1,83 @@
-Object Oriented Programming Course
-Homework - VideosDB
+================================================================================
+----------------- Copyright Chioveanu Stelian-Ovidiu 2021-2022 -----------------
+================================================================================
 
-November 2021
+============================ POO-TEMA-VIDEOSDB =================================
 
-# Info
+Noiembrie 2021
 https://ocw.cs.pub.ro/courses/poo-ca-cd/teme/tema
 
-# About the code
+================================ DESCRIERE =====================================
 
-We provide the input tests, the logic that parses them and the checker that runs them.
+        Tema consta in constuirea unui database ce are in componenta hashmap-uri
+cu utilizatori, filme, seriale, genuri, actori si actiuni. Pentru acestea din
+urma vor fi apelate metode ce modifica database-ul sau extrag diferite informa-
+tii din acesta.
 
-* test_db - contains the tests in JSON format
-* src
-   * checker - the checker's sources including the checkstyle necessary files, not to be modified
-   * fileio - classes for parsing the input files, not to be modified
-   * common, utils
-        * contain utility classes with constants and static methods
-        * you can add your own functionality in the existing classes or add new classes as well
-   * actor
-        * contains an enum for the types of awards an actor can have - do not modify it
-        * you can add here your actor related classes
-   * entertainment
-        * contains an enum for the supported video genres - do not modify it
-        * class for representing a Season of a tv show - do not modify it
-        * you can add here your entertainment related classes
+================================ COMPONENTA ====================================
 
-We encourage you to organize your implementation in packages based on the functionality their classes offer. Try to keep
-your code modular, readable and documented.
-
-# Testing
-
-The Main class runs the checker on your implementation. Add the entry point to your implementation in it.
-
-Run Main to test your implementation from the IDE or from command line.
-
-Run the main method from Test class with the name of the input file from the command line and the result will be written
-to the out.txt file. Thus, you can compare this result with ref.
+------------------------------ PACKAGE - MAIN ----------------------------------
+    - clasa "Main": in acesta clasa sunt citite din fisiere datele si introduse
+in intr-un obiect de tip "Input"; contine o metoda start care creeaza un
+repository si rezolva comenzile.
+    - clasa "Test": clasa citeste datele din fisierul primit in terminal si ape-
+leaza metoga start din "Main".
+--------------------------- PACKAGE - REPOSITORY -------------------------------
+    - clasa "Repository": numarul de instantieri ale unei clase este restrictio-
+nat la un singur obiect fiind utilizat un Singleton Pattern(Lazy instantiation).
+Acest obiect este chiar database-ul regasit in "Main". Clasa contine o metoda
+"entryPoint" apelata in "Main" prin care sunt introduse datele in database, o
+metoda "populateRepository" care introduce datele in database, o metoda
+"clearRepository" care goleste database-ul(deoarece programul nu se opreste la
+trecerea de la un fisier input la altul ) si o metoda "switchCasesAction"
+care creeaza obiecte de tip ("Command", "Query", :Recommendation") si apeleaza
+metoda corespunzatoare fiecarei actiuni.
+------------------------------ PACKAGE - USER ----------------------------------
+    - clasa "User": contine informatiile unui utilizator ce sunt primite din
+input sau calculate pe parcurs.
+-------------------------- PACKAGE - ENTERTAINMENT -----------------------------
+    - clasa "Movie": contine informatiile unui film ce sunt primite din input
+sau calculate pe parcurs. Acesta clasa mosteneste clasa "Video".
+    - clasa "Serial": contine informatiile unui serial ce sunt primite din input
+sau calculate pe parcurs. Acesta clasa mosteneste clasa "Video".
+    - clasa "Video": contine informatiile unui video ce sunt primite din input
+sau calculate pe parcurs.
+------------------------------ PACKAGE - ACTOR ---------------------------------
+    - clasa "Actor": contine informatiile unui user ce sunt primite din input
+sau calculate pe parcurs.
+------------------------------ PACKAGE - COMMON --------------------------------
+    - clasa "Action": contine informatiile unei actiuni ce sunt primite din
+input.
+    - clasa "ArrayBuilder": contine o metoda corespunzatoare query-urilor video-
+clipurilor. Aceasta formeaza un array de videoclipuri in functie de parametrul
+de diferentiere(numarul de vizinari, durata, rating, numar de aparitii la favo-
+rite).
+    - clasa "Output": contine metode corespunzatoare query-urilor. Acestea for-
+meaza un output de tip String ce va contine numarul de date corespunzator numa-
+rului primit in actiune, sau unul mai mic dupa caz.
+    - clasa "Constants": contine constante.
+----------------------------- PACKAGE - COMMANDS -------------------------------
+    - clasa "Command": contine metode de tip "COMMAND":
+        a) view
+        b) favorite
+        c) rating
+        d) ratingMovie
+        e) ratingSerial
+    - clasa "Query": contine metode de tip "QUERY":
+        a) average
+        b) awards
+        c) filterDescription
+        d) numberOfRatings
+        e) mostViewed
+        c) rating
+        d) favorite
+        e) longest
+    - clasa "Recommendation": contine metode de tip "RECOMMENDATION":
+        a) standard
+        b) bestUnseen
+        c) popularPremium
+        d) searchPremium
+        e) favoritePremium
+================================================================================
+--------------------------------------------------------------------------------
+================================================================================
