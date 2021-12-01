@@ -136,7 +136,7 @@ public final class Actor {
                 Scanner scan = new Scanner(actor.careerDescription);
                 scan.useDelimiter("\\W+");
                 while(scan.hasNext()){
-                    if (scan.next().equals(description)){
+                    if (scan.next().toLowerCase().equals(description)){
                         aux++;
                         break;
                     }
