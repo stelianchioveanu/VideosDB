@@ -8,10 +8,25 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * Information about an actor
+ */
 public final class Actor {
+    /**
+     * Name of an actor
+     */
     private final String name;
+    /**
+     * Career description of an actor
+     */
     private final String careerDescription;
+    /**
+     * Filmography of an actor
+     */
     private final ArrayList<String> filmography;
+    /**
+     * Awards of an actor
+     */
     private final Map<ActorsAwards, Integer> awards;
 
     public Actor(final ActorInputData actorInputData) {
@@ -38,7 +53,11 @@ public final class Actor {
     }
 
     /**
-     * com
+     * Calculates the actor's rating
+     *
+     * @param movieHashMap  HashMap containing movies
+     * @param serialHashMap HashMap containing serials
+     * @return Actor's rating
      */
     public double getActorRating(final HashMap<String, Movie> movieHashMap,
                                  final HashMap<String, Serial> serialHashMap) {
@@ -63,7 +82,9 @@ public final class Actor {
     }
 
     /**
-     * com
+     * Calculates the number of actor's awards
+     *
+     * @return Number of actor's awards
      */
     public int getActorNumberAwards() {
         return this.awards.values().stream().reduce(0, Integer::sum);

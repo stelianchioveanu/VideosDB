@@ -13,7 +13,12 @@ public final class ArrayBuilder {
     }
 
     /**
-     * com
+     * Add to sorted array the videos for each case
+     *
+     * @param action        Action
+     * @param serialHashMap HashMap with serials
+     * @param movieHashMap  HashMap with movies
+     * @return Array with videos
      */
     public ArrayList<Video> makeArray(final Action action,
                                       final HashMap<String, Movie> movieHashMap,

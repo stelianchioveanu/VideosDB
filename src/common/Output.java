@@ -12,7 +12,11 @@ public final class Output {
     }
 
     /**
-     * com
+     * Add to a StringBuilder the titles of videos from sortedArray
+     *
+     * @param sortedArray The sorted array
+     * @param action      The action
+     * @return Action's output
      */
     public static String outputVideoCommand(final ArrayList<Video> sortedArray,
                                             final Action action) {
@@ -42,7 +46,11 @@ public final class Output {
     }
 
     /**
-     * com
+     * Add to a StringBuilder the names of actors from sortedArray
+     *
+     * @param sortedArray The sorted array
+     * @param action      The action
+     * @return Action's output
      */
     public static String outputActorCommand(final ArrayList<Actor> sortedArray,
                                             final Action action) {
@@ -72,7 +80,11 @@ public final class Output {
     }
 
     /**
-     * com
+     * Add to a StringBuilder the usernames of users from sortedArray
+     *
+     * @param sortedArray The sorted array
+     * @param action      The action
+     * @return Action's output
      */
     public static String outputUserCommand(final ArrayList<User> sortedArray,
                                            final Action action) {

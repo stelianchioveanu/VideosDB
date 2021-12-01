@@ -40,7 +40,9 @@ public final class Repository {
     }
 
     /**
-     * com
+     * If the Repository instance is null, create a new one
+     *
+     * @return Instance of Repository class
      */
     public static Repository getInstance() {
         if (instance == null) {
@@ -49,7 +51,7 @@ public final class Repository {
         return instance;
     }
 
-    private void initialization(final Input input) {
+    private void populateRepository(final Input input) {
         for (Genre genre : Genre.values()) {
             this.genreHashMap.put(genre, Constants.ZERO);
         }
@@ -93,7 +95,7 @@ public final class Repository {
                 }
 
             }
-            for (String title : user.getFavoriteMovies()) {
+            for (String title : user.getFavoriteVideos()) {
                 if (movieHashMap.get(title) != null) {
                     movieHashMap.get(title).setNumberFavorite(
                             movieHashMap.get(title).getNumberFavorite() + 1);
@@ -196,11 +198,17 @@ public final class Repository {
     }
 
     /**
-     * com
+     * This is the entry point of the implementation
+     * Firstly populate the repository, then add the results
+     * of the actions to the arrayResult and finally release the repository.
+     *
+     * @param arrayResult Contain the result
+     * @param fileWriter  Write in arrayResult
+     * @param input       Contain the inputs
      */
     public void entryPoint(final Input input, final JSONArray arrayResult,
                            final Writer fileWriter) throws IOException {
-        this.initialization(input);
+        this.populateRepository(input);
         for (Integer i : actionArray.keySet()) {
             JSONObject object = fileWriter.writeFile(actionArray.get(i).getActionId(),
                     null, this.switchCasesAction(actionArray.get(i)));

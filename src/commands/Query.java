@@ -25,7 +25,13 @@ public final class Query {
     }
 
     /**
-     * com
+     * Add to a list the actors with best rated videos
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param actorHashMap  HashMap with actors
+     * @param action        Action
+     * @return Actors with best rated videos
      */
     public String average(final Action action,
                           final HashMap<String, Movie> movieHashMap,
@@ -49,7 +55,11 @@ public final class Query {
     }
 
     /**
-     * com
+     * Add to a list the actors with all awards
+     *
+     * @param actorHashMap HashMap with actors
+     * @param action       Action
+     * @return Actors with all awards
      */
     public String awards(final Action action,
                          final HashMap<String, Actor> actorHashMap) {
@@ -76,7 +86,11 @@ public final class Query {
     }
 
     /**
-     * com
+     * Add to a list the actors with all keywords in filter description
+     *
+     * @param actorHashMap HashMap with actors
+     * @param action       Action
+     * @return Actors with all keywords in filter description
      */
     public String filterDescription(final Action action,
                                     final HashMap<String, Actor> actorHashMap) {
@@ -103,7 +117,11 @@ public final class Query {
     }
 
     /**
-     * com
+     * Add to a list the users with most rated videos
+     *
+     * @param userHashMap HashMap with users
+     * @param action      Action
+     * @return Users with most rated videos
      */
     public String numberOfRatings(final Action action,
                                   final HashMap<String, User> userHashMap) {
@@ -125,7 +143,12 @@ public final class Query {
     }
 
     /**
-     * com
+     * Add to a list the most viewed rated videos
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param action        Action
+     * @return String with the most viewed rated videos
      */
     public String mostViewed(final Action action,
                              final HashMap<String, Movie> movieHashMap,
@@ -142,7 +165,12 @@ public final class Query {
     }
 
     /**
-     * com
+     * Add to a list the best rated videos
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param action        Action
+     * @return String with the best rated videos
      */
     public String rating(final Action action,
                          final HashMap<String, Movie> movieHashMap,
@@ -159,7 +187,12 @@ public final class Query {
     }
 
     /**
-     * com
+     * Add to a list the most favorite videos
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param action        Action
+     * @return String with the most favorite videos
      */
     public String favorite(final Action action,
                            final HashMap<String, Movie> movieHashMap,
@@ -176,7 +209,12 @@ public final class Query {
     }
 
     /**
-     * com
+     * Add to a list the longest videos
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param action        Action
+     * @return String with the longest videos
      */
     public String longest(final Action action,
                           final HashMap<String, Movie> movieHashMap,

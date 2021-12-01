@@ -6,12 +6,33 @@ import java.util.ArrayList;
  * Information about a video
  */
 public abstract class Video {
+    /**
+     * Year of a video
+     */
     protected int year;
+    /**
+     * Title of a video
+     */
     protected String title;
+    /**
+     * Genres of a video
+     */
     protected ArrayList<String> genres;
+    /**
+     * Number of views of a video
+     */
     protected int numberViews;
+    /**
+     * Number of favorites of a video
+     */
     protected int numberFavorite;
+    /**
+     * Cast of a video
+     */
     protected ArrayList<String> cast;
+    /**
+     * Duration of a video
+     */
     protected int duration;
 
     public Video(final int year, final String title,
@@ -59,12 +80,16 @@ public abstract class Video {
     }
 
     /**
-     * com
+     * Calculate the video's rating
+     *
+     * @return Video's rating
      */
     public abstract double getRating();
 
     /**
-     * com
+     * Calculate the video's duration
+     *
+     * @return Video's duration
      */
     public int getDuration() {
         return duration;

@@ -13,11 +13,17 @@ public final class Command {
     }
 
     /**
-     * com
+     * Increases the number of views of a video from the user's history
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param action        Action
+     * @param user          User
+     * @return Message
      */
     public String view(final Action action, final HashMap<String, Movie> movieHashMap,
-                              final HashMap<String, Serial> serialHashMap,
-                              final User user) {
+                       final HashMap<String, Serial> serialHashMap,
+                       final User user) {
         user.getHistory().merge(action.getTitle(), 1, Integer::sum);
         if (movieHashMap.get(action.getTitle()) != null) {
             movieHashMap.get(action.getTitle()).setNumberViews(
@@ -33,17 +39,23 @@ public final class Command {
     }
 
     /**
-     * com
+     * Add a video to the user's favorite list
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param action        Action
+     * @param user          User
+     * @return Message
      */
     public String favorite(final Action action, final HashMap<String, Movie> movieHashMap,
-                                  final HashMap<String, Serial> serialHashMap, final User user) {
+                           final HashMap<String, Serial> serialHashMap, final User user) {
         if (user.getHistory().get(action.getTitle()) != null) {
-            for (String favoriteMovie : user.getFavoriteMovies()) {
+            for (String favoriteMovie : user.getFavoriteVideos()) {
                 if (favoriteMovie.equals(action.getTitle())) {
                     return "error -> " + action.getTitle() + " is already in favourite list";
                 }
             }
-            user.getFavoriteMovies().add(action.getTitle());
+            user.getFavoriteVideos().add(action.getTitle());
             if (movieHashMap.get(action.getTitle()) != null) {
                 movieHashMap.get(action.getTitle()).setNumberFavorite(
                         movieHashMap.get(action.getTitle()).getNumberFavorite() + 1);
@@ -57,10 +69,16 @@ public final class Command {
     }
 
     /**
-     * com
+     * Rate a movie/serial
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param action        Action
+     * @param user          User
+     * @return Message
      */
     public String rating(final Action action, final HashMap<String, Movie> movieHashMap,
-                                final HashMap<String, Serial> serialHashMap, final User user) {
+                         final HashMap<String, Serial> serialHashMap, final User user) {
         if (action.getSeasonNumber() == 0) {
             return ratingMovie(action.getTitle(), movieHashMap, action.getGrade(), user);
         }
@@ -69,10 +87,17 @@ public final class Command {
     }
 
     /**
-     * com
+     * Rate a movie
+     *
+     * @param movieHashMap HashMap with movies
+     * @param user         User
+     * @param grade        User's Grade
+     * @param title        Movie's title
+     * @return Message
      */
-    private static String ratingMovie(final String title, final HashMap<String, Movie> movieHashMap,
-                                     final double grade, final User user) {
+    private static String ratingMovie(final String title,
+                                      final HashMap<String, Movie> movieHashMap,
+                                      final double grade, final User user) {
         if (user.getHistory().get(title) != null) {
             if (user.getRatedMovies().get(title) != null) {
                 return "error -> " + title + " has been already rated";
@@ -89,11 +114,20 @@ public final class Command {
     }
 
     /**
-     * com
+     * Rate a serial
+     *
+     * @param seasonNumber  Season's number
+     * @param serialHashMap HashMap with serials
+     * @param user          User
+     * @param grade         User's Grade
+     * @param title         Movie's title
+     * @return Message
      */
-    private static String ratingSerial(final String title, final HashMap<String,
-            Serial> serialHashMap, final int seasonNumber,
-                                      final double grade, final User user) {
+    private static String ratingSerial(final String title,
+                                       final HashMap<String, Serial> serialHashMap,
+                                       final int seasonNumber,
+                                       final double grade,
+                                       final User user) {
         if (user.getHistory().get(title) != null) {
             if (user.getRatedSeasons().get(serialHashMap.get(title).getSeasons().get(seasonNumber
                     - 1)) != null) {

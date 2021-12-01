@@ -18,7 +18,12 @@ public class Recommendation {
     }
 
     /**
-     * com
+     * Search for first unseen video
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param user          User
+     * @return Message
      */
     public String standard(final HashMap<String, Movie> movieHashMap,
                            final HashMap<String, Serial> serialHashMap,
@@ -37,7 +42,12 @@ public class Recommendation {
     }
 
     /**
-     * com
+     * Search for best rated unseen video
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param user          User
+     * @return Message
      */
     public String bestUnseen(final HashMap<String, Movie> movieHashMap,
                              final HashMap<String, Serial> serialHashMap,
@@ -65,7 +75,13 @@ public class Recommendation {
     }
 
     /**
-     * com
+     * Search for the first unseen video of the most popular genre
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param genreHashMap  HashMap with genres
+     * @param user          User
+     * @return Message
      */
     public String popularPremium(final HashMap<String, Movie> movieHashMap,
                                  final HashMap<String, Serial> serialHashMap,
@@ -103,7 +119,13 @@ public class Recommendation {
     }
 
     /**
-     * com
+     * Search for unseen videos of the genre from input
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param genre         Genre
+     * @param user          User
+     * @return Message
      */
     public String searchPremium(final HashMap<String, Movie> movieHashMap,
                                 final HashMap<String, Serial> serialHashMap,
@@ -150,7 +172,12 @@ public class Recommendation {
     }
 
     /**
-     * com
+     * Search for the first unseen video with the largest number of favorites.
+     *
+     * @param movieHashMap  HashMap with movies
+     * @param serialHashMap HashMap with serials
+     * @param user          User
+     * @return Message
      */
     public String favoritePremium(final HashMap<String, Movie> movieHashMap,
                                   final HashMap<String, Serial> serialHashMap,

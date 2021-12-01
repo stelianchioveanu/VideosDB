@@ -6,7 +6,13 @@ import fileio.MovieInputData;
  * Information about a movie
  */
 public final class Movie extends Video {
+    /**
+     * Number of ratings of a movie
+     */
     private int numberRatings;
+    /**
+     * Rating of a movie
+     */
     private double rating;
 
     public Movie(final MovieInputData movieInputData) {

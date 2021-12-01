@@ -4,8 +4,17 @@ import fileio.SerialInputData;
 
 import java.util.ArrayList;
 
+/**
+ * Information about a serial
+ */
 public final class Serial extends Video {
+    /**
+     * Number of seasons of a serial
+     */
     private final int numberSeasons;
+    /**
+     * Seasons of a serial
+     */
     private final ArrayList<Season> seasons;
 
     public Serial(final SerialInputData serialInputData) {
@@ -19,6 +28,7 @@ public final class Serial extends Video {
         }
         this.duration = duration;
     }
+
     @Override
     public double getRating() {
         double serialRating = 0;
@@ -29,10 +39,6 @@ public final class Serial extends Video {
             }
         }
         return serialRating / this.numberSeasons;
-    }
-
-    public int getNumberSeasons() {
-        return numberSeasons;
     }
 
     public int getDuration() {
