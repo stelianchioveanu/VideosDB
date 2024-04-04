@@ -7,6 +7,7 @@ import fileio.Input;
 import fileio.InputLoader;
 import fileio.Writer;
 import org.json.simple.JSONArray;
+import repository.Repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 /**
- * The entry point to this homework. It runs the checker that tests your implentation.
+ * The entry point to this homework. It runs the checker that tests your implementation.
  */
 public final class Main {
     /**
@@ -27,6 +28,7 @@ public final class Main {
 
     /**
      * Call the main checker and the coding style checker
+     *
      * @param args from command line
      * @throws IOException in case of exceptions to reading / writing
      */
@@ -71,9 +73,7 @@ public final class Main {
         JSONArray arrayResult = new JSONArray();
 
         //TODO add here the entry point to your implementation
-        Repository star = new Repository();
-        star.entryPoint(input, arrayResult, fileWriter);
-
+        Repository.getInstance().entryPoint(input, arrayResult, fileWriter);
         fileWriter.closeJSON(arrayResult);
     }
 }

@@ -4,19 +4,61 @@ import fileio.ActionInputData;
 
 import java.util.List;
 
+/**
+ * Information about an action
+ */
 public final class Action {
+    /**
+     * ID of an action
+     */
     private final int actionId;
+    /**
+     * Type of action
+     */
     private final String actionType;
+    /**
+     * Type of command, query or recommendation
+     */
     private final String type;
+    /**
+     * Username contained in the action
+     */
     private final String username;
+    /**
+     * Type of object contained in the action
+     */
     private final String objectType;
+    /**
+     * Type of sort contained in the action
+     */
     private final String sortType;
+    /**
+     * Criteria contained in the action
+     */
     private final String criteria;
+    /**
+     * Title contained in the action
+     */
     private final String title;
+    /**
+     * Genre contained in the action
+     */
     private final String genre;
+    /**
+     * Size of output list
+     */
     private final int number;
+    /**
+     * Grade contained in the action
+     */
     private final double grade;
+    /**
+     * Season's number contained in the action
+     */
     private final int seasonNumber;
+    /**
+     * Filters contained in the action
+     */
     private final List<List<String>> filters;
 
     public Action(final ActionInputData actionInputData) {
@@ -33,25 +75,6 @@ public final class Action {
         this.grade = actionInputData.getGrade();
         this.seasonNumber = actionInputData.getSeasonNumber();
         this.filters = actionInputData.getFilters();
-    }
-
-    @Override
-    public String toString() {
-        return "Action{"
-                + "actionId=" + actionId
-                + ", actionType='" + actionType + '\''
-                + ", type='" + type + '\''
-                + ", username='" + username + '\''
-                + ", objectType='" + objectType + '\''
-                + ", sortType='" + sortType + '\''
-                + ", criteria='" + criteria + '\''
-                + ", title='" + title + '\''
-                + ", genre='" + genre + '\''
-                + ", number=" + number
-                + ", grade=" + grade
-                + ", seasonNumber=" + seasonNumber
-                + ", filters=" + filters
-                + '}';
     }
 
     public int getActionId() {
